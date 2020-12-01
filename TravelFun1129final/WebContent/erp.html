@@ -1,0 +1,501 @@
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>旅遊趣後台</title>
+  <style>
+      *{
+          margin: 0;
+          padding: 0;
+      }
+      div{
+          width: 1280px;
+          margin: auto;
+          
+      }
+      .header{
+          display: flex;
+          background-color: #fffff0;
+      }
+      .header img{
+          width: 200px;
+          height: 80px;
+          padding: 5px;
+          
+      }
+      .header h1{
+          color: #2096f8;
+          padding: 10px;
+      }
+      input{
+          margin: 5px;
+      }
+      .btn{
+          text-align: center;
+      }
+      button {
+            text-align: center;
+            margin: 10px;
+            padding: 5px;
+            font-size: 18px;
+        }
+      .footer{
+          background-color: #2fa8f7;
+          color: #ffffff;
+      }
+      .about{
+          padding: 20px;
+      }
+      .copyright{
+          text-align: center;
+      }
+       .tables{
+      		width:90%;
+      		height: 100%;
+      		table-layout:fixed;
+       }
+       .tables_tit{
+       white-space:nowrap;
+       overflow:hidden;
+       text-overflow:ellipsis;
+       word-break:keep-all;
+       }
+  </style>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+  <script>
+  $( function() {
+    $( "#tabs" ).tabs();
+  } );
+  </script>
+</head>
+<body>
+    <div class="header">
+        <a href="index.jsp"><img src="images/logo2.jpg" alt="旅遊趣戶外店"></a>
+        <h1>旅遊趣戶外店線上購物</h1>
+    </div>
+ 
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1" id="tabs1">廠商管理</a></li>
+    <li><a href="#tabs-2" id="tabs2">庫存管理</a></li>
+    <li><a href="#tabs-3" id="tabs3">新增主商品</a></li>
+    <li><a href="#tabs-4" id="tabs4">新增商品顏色圖片</a></li>
+    <li><a href="#tabs-5" id="tabs5">新增商品尺寸</a></li>
+    <li><a href="#tabs-6" id="tabs6">業績圖表</a></li>
+    <li><a href="#tabs-7" id="tabs7">回首頁</a></li>
+  </ul>
+  <div id="tabs-1">
+    <div class="pMg1">
+        廠商編號：<input type="text" size=10 maxlength=5 id="supid" value="7">
+        廠商名稱：<input type="text" id="supname" value="HANCHOR">
+        廠商地址：<input type="text" id="supaddress" value="新北市三重區光復路1段83巷7號5樓"><br>
+        廠商信箱：<input type="text" id="supemail" value="info@hanchor.com">
+        廠商電話：<input type="text" size=10 maxlength=10 id="supphone" value="0285112012">
+        業務姓名：<input type="text" id="supsalesname" value="謝章天"><br>
+        業務電話：<input type="text" size=10 maxlength=10 id="supsalesphone" value="0285112012">
+        業務信箱：<input type="text" id="supsalesemail" value="info@hanchor.com"><br>
+
+        <div class="btn"><button onclick="supplieradd()">新增</button><button onclick="supplierupdate()">修改</button><button onclick="supplierdelete()">刪除</button></div>
+    </div>
+    <div class="show" id="supplierresult"></div> <!--查詢區塊-->
+  </div>
+  
+  
+  
+  <div id="tabs-2">
+    <div class="pMg2">
+        商品名稱：<select name="products" id="items1">請選擇商品</select><br>
+        進貨數量：<input type="text" id="repleupdate">
+        <div class="btn"><button onclick="repleok()">新增</button></div>
+    </div>
+    <div class="show" id="replenishmentresult"></div> <!--查詢區塊-->
+  </div>
+  
+  
+  <div id="tabs-3">
+    <div class="pMg3">
+     商品編號：<input type="text" id="proid" value="7">
+        商品名稱：<input type="text" id="proname" value="CINDER 輕量快收攻頂背包">
+        商品價格：<input type="text" id="prounit_price" value="2690"><br>
+        商品說明：<input type="text" id="prodescription" value="戶外系列攻頂背包，輕量化規格迅速快收，搭載 Two-Track minimus 透氣背負系統提供精簡收納機能，適合作為攻頂用途或單日背包背負使用。
+• 主面料採雙格抗撕裂 100D Nylon PC規格塗層材質
+• 自體網袋快收機能設計
+• 主、側網袋設置
+• 前方拉鍊小物夾層
+• 主艙大口袋夾層
+• 主艙水袋孔、水袋掛勾、織帶環
+• 外部四處織帶環配置
+隨包所附配件
+• 極輕量繩式胸扣">
+        商品賣場：<input type="text" id="proclass_name" value="outlet">
+        商品折扣：<input type="text" id="prodiscount" value="10">
+        商品分類：<input type="text" id="procategory" value="背包"><br>
+        商品品牌：<input type="text" id="probrand" value="HANCHOR">
+        廠商編號：<input type="text" id="prosupplier" value="7"><br>
+        <div class="btn"><button onclick="proadd()">新增</button><button onclick="proupdate()">修改</button><button onclick="prodelete()">刪除</button></div>
+    </div>
+    <div class="show" id="prodcutresult"></div> <!--查詢區塊-->
+  </div>
+  
+  
+  
+  <div id="tabs-4">
+    <div class="pMg4">
+       <form method="post" Action="newproductcolorServlet" enctype="multipart/form-data">
+        商品編號：<input type="text" name="procolorproduct_id" id="procolorproduct_id" value="7">
+        商品顏色：<input type="text" name="procolorcolor_name" id="procolorcolor_name" value="灰綠">
+        商品貨號：<input type="text" name="procoloritem_number"  id="procoloritem_number" value="BF20201126-555"><br>
+        圖1：<input type="file" name="procolorphoto_main_url" id="procolorphoto_main_url"  readonly ref="upload">
+        圖2：<input type="file" name="procolorphoto_url1"  id="procolorphoto_url1"  readonly ref="upload"><br>
+        圖3：<input type="file" name="procolorphoto_url2" id="procolorphoto_url2"  readonly ref="upload">
+        圖4：<input type="file" name="procolorphoto_url3" id="procolorphoto_url3" readonly ref="upload"><br>
+        圖5：<input type="file" name="procolorphoto_url4" id="procolorphoto_url4" readonly ref="upload"><br>
+        
+        <div class="btn"><input type="submit" name="Submit" value="新增" id="procolorsubmit"></div>
+   		</form>
+   		<input type="button" onclick="procolordelete()" value="刪除" >
+    </div>
+    <div class="show" id="prodcutcolorresult"></div> <!--查詢區塊-->
+  
+  </div>
+  
+  
+  
+  <div id="tabs-5">
+    <div class="pMg5">
+        商品顏色：<input type="text" id="prosizecolorname" value="灰綠">
+        商品尺寸：<input type="text" id="prosizename" value="單一尺寸">
+        商品貨號：<input type="text" id="prosizenumber" value="BF20201126-555"><br>
+        商品庫存：<input type="text" id="prosizestock" value="5">
+        <div class="btn"><button onclick="prosizeadd()">新增</button><button onclick="prosizeupdate()">修改</button><button onclick="prosizedelete()">刪除</button></div>
+    </div>
+    <div class="show" id="prodcutsizeresult"></div> <!--查詢區塊-->
+  </div>
+
+
+
+ <div id="tabs-6">
+    <div class="pMg6" id="msg" style="width: 400px; height: 400px">
+    </div>
+    
+  </div>
+</div>
+
+<div class="footer">
+    <div class="about">
+        <h2>關於旅遊趣</h2><br>
+
+        <p>網站由 旅遊趣六人專題製作團隊 開發</p><br>
+        <p>開發人員： 詹子賢 莊淳名 陳柏廷 孫淦坤 陳民安 張博森</p><br>
+        <p>指導老師： 張庭禎 老師</p><br>
+    </div>
+    <hr><br>
+    <div class="copyright">
+        &copy; 旅遊趣戶外店 版權所有 2020
+    </div>
+</div>
+ 
+ <script>
+
+$(document).ready(function(){
+	$.post("supplierServlet",function(data){
+        $("#supplierresult").html(data);
+   });
+	   
+});
+ 
+$("#tabs1").click(function(){
+	$.post("supplierServlet",function(data){
+        $("#supplierresult").html(data);
+   });
+});
+$("#tabs2").click(function(){
+	 $.post("replenishmentServlet",function(data){
+		   $("#items1").html(data);
+});
+});
+$("#tabs2").click(function(){
+	$.post("newreplenishmentServlet",function(data){
+	    $("#replenishmentresult").html(data);
+	});
+});
+$("#tabs3").click(function(){
+	 $.post("productServlet",function(data){
+	        $("#prodcutresult").html(data);
+		});
+	
+});
+$("#tabs4").click(function(){
+	 $.post("productcolorServlet",function(data){
+	        $("#prodcutcolorresult").html(data);
+	   });
+	 
+});
+$("#tabs5").click(function(){
+	$.post("productsizeServlet",function(data){
+        $("#prodcutsizeresult").html(data);
+   });
+});
+$("#tabs6").click(function(){
+	$.post("chartServlet",function(data){
+        $("#msg").html(data);
+   });
+});
+$("#tabs7").click(function(){
+	document.location.href="index.jsp";
+});
+function supplierquery(){
+    $.post("supplierServlet",function(data){
+        $("#supplierresult").html(data);
+   });
+} 
+
+function supplieradd(){	 
+	var  id= $("#supid").val();
+	var  name= $("#supname").val();
+	var  supaddress= $("#supaddress").val();
+	var  supemail= $("#supemail").val();
+	var  supphone= $("#supphone").val();
+	var  supsalesname= $("#supsalesname").val();
+	var  supsalesphone= $("#supsalesphone").val();
+	var  supsalesemail= $("#supsalesemail").val();
+   $.post("supplierServlet",
+		   {"id":id,"companyname":name,"address":supaddress,
+	   "email":supemail,"phone":supphone,"salesName":supsalesname,"salesPhone":supsalesphone,"salesEmail":supsalesemail,"methed":"add"},
+           function(data){
+           	 $("#supplierresult").html(data);
+           }
+      );
+}
+function supplierupdate(){	 
+	var  id= $("#supid").val();
+	var  name= $("#supname").val();
+	var  supaddress= $("#supaddress").val();
+	var  supemail= $("#supemail").val();
+	var  supphone= $("#supphone").val();
+	var  supsalesname= $("#supsalesname").val();
+	var  supsalesphone= $("#supsalesphone").val();
+	var  supsalesemail= $("#supsalesemail").val();
+   $.post("supplierServlet",
+		   {"id":id,"companyname":name,"address":supaddress,
+	   "email":supemail,"phone":supphone,"salesName":supsalesname,"salesPhone":supsalesphone,"salesEmail":supsalesemail,"methed":"update"},
+           function(data){
+           	 $("#supplierresult").html(data);
+           }
+      );
+	}
+function supplierdelete(){	 
+	var  id= $("#supid").val();
+	var  name= $("#supname").val();
+	var  supaddress= $("#supaddress").val();
+	var  supemail= $("#supemail").val();
+	var  supphone= $("#supphone").val();
+	var  supsalesname= $("#supsalesname").val();
+	var  supsalesphone= $("#supsalesphone").val();
+	var  supsalesemail= $("#supsalesemail").val();
+   $.post("supplierServlet",
+		   {"id":id,"companyname":name,"address":supaddress,
+	   "email":supemail,"phone":supphone,"salesName":supsalesname,"salesPhone":supsalesphone,"salesEmail":supsalesemail,"methed":"delete"},
+           function(data){
+           	 $("#supplierresult").html(data);
+           }
+      );
+	}
+
+
+
+
+
+
+
+function repleok(){
+	var a=$("#items1").val();
+	var t=a.split(",");
+	var color=t[2];
+	var number=t[3];
+	var aa=parseInt(t[4]);
+	var aaa=parseInt($("#repleupdate").val())
+	var stock=aa+aaa;
+	$.post("newreplenishmentServlet",
+			   {"color":color,"number":number,"stock":stock},function(data){
+			   $("#replenishmentresult").html(data)
+			   });
+}
+
+
+
+
+
+function proquery(){
+    $.post("productServlet",function(data){
+        $("#prodcutresult").html(data);
+   });
+} 
+function proadd(){
+	var  id= $("#proid").val();
+	var  name= $("#proname").val();
+	var  unit_price= $("#prounit_price").val();
+	var  description= $("#prodescription").val();
+	var  class_name= $("#proclass_name").val();
+	var  discount= $("#prodiscount").val();
+	var  category= $("#procategory").val();
+	var  brand= $("#probrand").val();
+	var  prosupplier= $("#prosupplier").val();
+	
+	$.post("productServlet",{"id":id,"name":name,"unit_price":unit_price,"description":description,"class_name":class_name,"discount":discount,"category":category,"brand":brand,"prosupplier":prosupplier,"methed":"add"},function(data){
+        $("#prodcutresult").html(data);
+   });
+} 
+function proupdate(){
+	var  id= $("#proid").val();
+	var  name= $("#proname").val();
+	var  unit_price= $("#prounit_price").val();
+	var  description= $("#prodescription").val();
+	var  class_name= $("#proclass_name").val();
+	var  discount= $("#prodiscount").val();
+	var  category= $("#procategory").val();
+	var  brand= $("#probrand").val();
+	var  prosupplier= $("#prosupplier").val();
+	$.post("productServlet",{"id":id,"name":name,"unit_price":unit_price,"description":description,"class_name":class_name,"discount":discount,"category":category,"brand":brand,"prosupplier":prosupplier,"methed":"update"},function(data){
+        $("#prodcutresult").html(data);
+   });
+} 
+function prodelete(){
+	var  id= $("#proid").val();
+	var  name= $("#proname").val();
+	var  unit_price= $("#prounit_price").val();
+	var  description= $("#prodescription").val();
+	var  class_name= $("#proclass_name").val();
+	var  discount= $("#prodiscount").val();
+	var  category= $("#procategory").val();
+	var  brand= $("#probrand").val();
+	var  prosupplier= $("#prosupplier").val();
+	$.post("productServlet",{"id":id,"name":name,"unit_price":unit_price,"description":description,"class_name":class_name,"discount":discount,"category":category,"brand":brand,"prosupplier":prosupplier,"methed":"delete"},function(data){
+        $("#prodcutresult").html(data);
+   });
+} 
+
+
+
+
+
+
+
+
+function procolorquery(){
+    $.post("productcolorServlet",function(data){
+        $("#prodcutcolorresult").html(data);
+   });
+} 
+
+function procoloradd(){
+	var  id= $("#procolorproduct_id").val();
+	var  name= $("#procolorcolor_name").val();
+	var  url= $("#procolorphoto_main_url").val();
+	var  url1= $("#procolorphoto_url1").val();
+	var  url2= $("#procolorphoto_url2").val();
+	var  url3= $("#procolorphoto_url3").val();
+	var  url4= $("#procolorphoto_url4").val();
+	var  item_number= $("#procoloritem_number").val();
+
+	$.post("productcolorServlet",{"id":id,"name":name,"url":url,"url1":url1,"url2":url2,"url3":url3,"url4":url4,"item_number":item_number,"methed":"add"},function(data){
+        $("#prodcutcolorresult").html(data);
+   });
+} 
+
+
+
+
+function procolorupdate(){
+	var  id= $("#procolorproduct_id").val();
+	var  name= $("#procolorcolor_name").val();
+	var  url= $("#procolorphoto_main_url").val();
+	var  url1= $("#procolorphoto_url1").val();
+	var  url2= $("#procolorphoto_url2").val();
+	var  url3= $("#procolorphoto_url3").val();
+	var  url4= $("#procolorphoto_url4").val();
+	var  item_number= $("#procoloritem_number").val();
+
+	$.post("productcolorServlet",{"id":id,"name":name,"url":url,"url1":url1,"url2":url2,"url3":url3,"url4":url4,"item_number":item_number,"methed":"update"},function(data){
+        $("#prodcutcolorresult").html(data);
+   });
+} 
+
+function procolordelete(){
+	var  id= $("#procolorproduct_id").val();
+	var  name= $("#procolorcolor_name").val();
+	var  url= $("#procolorphoto_main_url").val();
+	var  url1= $("#procolorphoto_url1").val();
+	var  url2= $("#procolorphoto_url2").val();
+	var  url3= $("#procolorphoto_url3").val();
+	var  url4= $("#procolorphoto_url4").val();
+	var  item_number= $("#procoloritem_number").val();
+	
+	$.post("productcolorServlet",{"id":id,"name":name,"url":url,"url1":url1,"url2":url2,"url3":url3,"url4":url4,"item_number":item_number,"methed":"delete"},function(data){
+        $("#prodcutcolorresult").html(data);
+   });
+} 
+
+
+
+
+
+
+
+
+
+function prosizequery(){
+    $.post("productsizeServlet",function(data){
+        $("#prodcutsizeresult").html(data);
+   });
+} 
+
+function prosizeadd(){	 
+	var  sizecolorname= $("#prosizecolorname").val();
+	var  sizename= $("#prosizename").val();
+	var  sizenumber= $("#prosizenumber").val();
+	var  sizestock= $("#prosizestock").val();
+   $.post("productsizeServlet",
+		   {"sizecolorname":sizecolorname,"sizename":sizename,"sizenumber":sizenumber,
+	   "sizestock":sizestock,methed:"add"},
+           function(data){
+           	 $("#prodcutsizeresult").html(data);
+           }
+      );
+}
+function prosizeupdate(){	 
+	var  sizecolorname= $("#prosizecolorname").val();
+	var  sizename= $("#prosizename").val();
+	var  sizenumber= $("#prosizenumber").val();
+	var  sizestock= $("#prosizestock").val();
+   $.post("productsizeServlet",
+		   {"sizecolorname":sizecolorname,"sizename":sizename,"sizenumber":sizenumber,
+	   "sizestock":sizestock,methed:"update"},
+           function(data){
+           	 $("#prodcutsizeresult").html(data);
+           }
+      );
+}
+function prosizedelete(){	 
+	var  sizecolorname= $("#prosizecolorname").val();
+	var  sizename= $("#prosizename").val();
+	var  sizenumber= $("#prosizenumber").val();
+	var  sizestock= $("#prosizestock").val();
+   $.post("productsizeServlet",
+		   {"sizecolorname":sizecolorname,"sizename":sizename,"sizenumber":sizenumber,
+	   "sizestock":sizestock,methed:"delete"},
+           function(data){
+           	 $("#prodcutsizeresult").html(data);
+           }
+      );
+}
+</script>
+ 
+ 
+</body>
+</html>

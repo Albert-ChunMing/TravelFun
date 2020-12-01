@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+body{font-family: Arial, "微軟正黑體" ;
+      margin:0px;
+	  padding:0px;
+	}
+
+.colorIcon{width:100px;height:30px;margin: 5px;font-size:19px;}			
+.sizeIcon{width:100px;	height:30px;margin: 5px;font-size:19px;}		
+.productPhotoIcon:hover{box-shadow: 1px 1px 3px red;}		
+.selectedproductPhotoIcon{border: green solid 50px; border-radius: 50px;}		
+.productMain{	min-width:100px;margin:40px 0px 0px 20px;}		
+.productMain img{width:600px;height:600px;border: grey solid 2px;}	
+.productFeature{width:70%;min-width:200px;position:absolute;left:750px}	
+.productPhotoIcon{margin:0px 0px 0px 20px;	display:inline;}		
+.productPhotoIcon img{width:5%;}		
+.ultest{clear:both;position:relative;left:20px}
+.number{width:100px;height:25px;font-size:19px;text-align:center;}
+.addCart{margin: 5px;font-size:19px;font-weight:bold;}
+.display{display:flex;}
+	
+
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
