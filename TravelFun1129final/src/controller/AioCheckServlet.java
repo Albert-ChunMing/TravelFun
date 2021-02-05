@@ -1,7 +1,9 @@
 package controller;
 
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -141,11 +144,14 @@ public class AioCheckServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	//產生表單 並且送出到頁面 直接轉跳到綠界結帳網頁
-	public static String genAioCheckOutALL(HttpServletRequest request,HttpServletResponse response) throws UnknownHostException{
+	public static String genAioCheckOutALL(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		String protocol = request.getScheme();//取得通訊協定
-		String ipAddress =  java.net.InetAddress.getLocalHost().getHostAddress();//取得伺服器位置
+		URL whatismyip = new URL("http://checkip.amazonaws.com");
+		BufferedReader in = new BufferedReader(new InputStreamReader(whatismyip.openStream()));
+		String ipAddress =  in.readLine();//取得伺服器IP位置
+		in.close();
 		String url = protocol + "://" + ipAddress + ":" + request.getLocalPort() + request.getContextPath()+"/QueryOrder.jsp";//port通訊port號碼 ContextPath為專案路徑
-		
+//		String url = protocol + "://150.117.194.215:8080"+request.getContextPath()+"/QueryOrder.jsp"; 
 		HttpSession session=request.getSession();
 		System.out.println("AioCheckServlet session ID "+session.getId());
 	

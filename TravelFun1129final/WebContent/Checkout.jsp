@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page import="java.util.List" %>
+<%@ page import="java.util.List, java.net.*, java.io.*" %>
 <%@ page import="model.CartProduct" %>
 <%@ page import="tf.entity.Customer" %>
 <%
@@ -153,13 +153,17 @@
 <script>
 		function goEZship() {
     	 //指定ezShip回傳資料的位址(本地url 配合自己專案名稱)
-     	 var protocol = "<%=request.getProtocol().toLowerCase().substring(0, request.getProtocol().indexOf("/"))%>";
-		 var ipAddress = "<%= java.net.InetAddress.getLocalHost().getHostAddress()%>";
-		 var url = protocol + "://" + ipAddress + ":" + location.port + "<%=request.getContextPath()%>/Checkout.jsp";		 		
+     	 var protocol = "<%=request.getScheme()%>";		
+		<%URL whatismyip = new URL("http://checkip.amazonaws.com");
+			BufferedReader in = new BufferedReader(new InputStreamReader(whatismyip.openStream()));%>
+		 var ipAddress = "<%=in.readLine()%>";
+		 <%in.close();%>
+	     var url = protocol + "://" + ipAddress + ":" + location.port + "<%=request.getContextPath()%>/Checkout.jsp";	
 		$("#rtURL").val(url);
 		//設定要傳到ezShip的資料  之後再由ezShip原封不動帶回
 		<%System.out.println("session ID: "+session.getId());%>		
 		$("#webPara").val("<%=session.getId()%>");
+		
 		//提交表單			
 	    $("#ezForm").submit();	   
 }
