@@ -44,10 +44,9 @@
 <title>Cart View</title>
 <meta charset="UTF-8">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="travelFun.css">
 <style type="text/css">
 	html, body {height: 100%;background-color:#eeeeee}
-	header {background-color:#00CACA; color:#FFFFFF;text-align:center;padding:10px;font-size:40px;font-weight:bold;font-family: Microsoft JhengHei}	
-	footer {background-color:#00CACA; color:#FFFFFF;text-align:center;padding:10px;font-size:15px;font-weight:bold;font-family: Microsoft JhengHei;}	
 	.wrapper { min-height: 100%}
 	.row {display: flex; width:80%; margin: 10px auto;background-color: #fff; border-radius: 3px; padding: 10px;align-items: center}
 	.row div {font-family: Microsoft JhengHei; margin: 0px auto;width:200px}
@@ -69,6 +68,7 @@
     .title{text-align:center;width:80%; margin: 10px auto;background-color:#3C3C3C;padding: 10px;
    			 font-size:30px;font-weight:bold;font-family: Microsoft JhengHei;color:#ffffff;
    			 border:2px solid #ffffff}
+   	#detail{margin-top: 90px;}
 </style>
 </head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
@@ -76,11 +76,9 @@
 <script type="text/javascript">			
 	window.history.forward(1);
 </script>
-<header>
-		<div>旅遊趣線上購物</div>
-</header>
+<%@include file="/WEB-INF/subviews/header.jsp" %>
 <div class="wrapper">
-<div class="title">訂單明細</div>
+<div class="title" id="detail">訂單明細</div>
 		<div class="row color bold">
 			<div>商品</div>
 			<div>規格</div>
@@ -169,9 +167,6 @@
 }
 			
 </script>
-
-<footer>
-		<div>旅遊趣有限公司版權所有2020</div>
-</footer>	
+<%@include file="/WEB-INF/subviews/footer.jsp" %>
 </body>
 </html>

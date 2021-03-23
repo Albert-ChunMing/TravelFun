@@ -44,7 +44,7 @@
 		$.post("CartServlet",{"name":$("#name").val() ,"color":$("#color").val() ,"size":$("#size").val() , "quantity":$("#quantity").val() ,"execute":"add"},show);
 	}	
 	function show(data){
-		$("#msg").html(data);
+		$("#goods").html(data);
 	}	   	
 </script>	
 </head>

@@ -10,10 +10,9 @@
 <title>Cart View</title>
 <meta charset="UTF-8">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="travelFun.css">
 <style type="text/css">
 	html, body {height: 100%;background-color:#eeeeee}
-	header {background-color:#00CACA; color:#FFFFFF;text-align:center;padding:10px;font-size:40px;font-weight:bold;font-family: Microsoft JhengHei}	
-	footer {background-color:#00CACA; color:#FFFFFF;text-align:center;padding:10px;font-size:15px;font-weight:bold;font-family: Microsoft JhengHei;}	
 	.wrapper { min-height: 100%}
 	.row {display: flex; width:90%; margin: 10px auto;background-color: #fff; border-radius: 3px; padding: 10px;align-items: center}
 	.row div {font-family: Microsoft JhengHei; margin: 0px auto;width:200px}
@@ -28,7 +27,7 @@
 	.trashcan{width:40px;height:41px; background-image:url('images/trash.PNG');border:2px solid #ffffff}
 	.trashcan:hover { background-color:#ffffff; color: white;border:2px solid #FF9797}
 	.total{font-size:30px;font-weight:bold;font-family: Microsoft JhengHei;color:	#AE0000;}
-	.title{text-align:center;width:90%; margin: 10px auto;background-color:#3C3C3C;padding: 10px;
+	.title{text-align:center;width:90%; margin: 10px auto;margin-top:90px;background-color:#3C3C3C;padding: 10px;
    			 font-size:30px;font-weight:bold;font-family: Microsoft JhengHei;color:#ffffff;
    			 border:2px solid #ffffff}
 </style>
@@ -37,9 +36,7 @@
 <script type="text/javascript">			
 	window.history.forward(1);
 </script>
-<header>
-		<div>旅遊趣線上購物</div>
-</header>
+<%@include file="/WEB-INF/subviews/header.jsp" %>
 <div class="title">購物車</div>
 <div class="wrapper" id="msg">
 		<div class="row color bold">
@@ -115,9 +112,6 @@
 			}
 	</script>			
 </div>
-
-<footer>
-		<div>旅遊趣有限公司版權所有2020</div>
-</footer>	
+<%@include file="/WEB-INF/subviews/footer.jsp" %>
 </body>
 </html>

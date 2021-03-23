@@ -1,6 +1,5 @@
 <%@page import="tf.entity.Customer"%>
-<%@ page pageEncoding="UTF-8"%>
-
+<%@page pageEncoding="UTF-8"%>
 <%@page import="tf.entity.Product"%>
 <%@page import="java.util.List"%>
 <%@page import="tf.service.ProductService"%>
@@ -11,8 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" >
 <title>旅遊趣戶外店</title>
 <link rel="stylesheet" type="text/css" href="travelFun.css">
-<script src='js/jquery.js'></script>
-	            
+<script src='js/jquery.js'></script>	            
 <script>
 <% Customer c= (Customer)request.getAttribute("member");
 Customer logoutMember = (Customer)request.getAttribute("logout-member");
@@ -31,10 +29,7 @@ function sayHello(){
 	   location.href="<%= request.getContextPath() %>"; //轉址
 }
  <%}%>
-	            
-	            
-</script>
-<script>
+
    function tobrand(value){
 	$.post("brand.jsp",{"brand":value},result);
 	}
@@ -43,22 +38,14 @@ function sayHello(){
 	}
 </script>
 
-
-
-
 <style type="text/css">
-
-
 .content2{
 	    margin: 130px 0px 20px 0px; 
-	    text-align : center;
-	   
-	}
-	
+	    text-align : center;	   
+}	
 .content2 img{
 		max-width:95%;
-		height:auto;
-		   
+		height:auto;		   
 }	
 .content3{
 		width:100px;
@@ -66,23 +53,19 @@ function sayHello(){
 		margin:0px 5px 5px 120px;
  	    border: 2px solid grey;
 	    display:inline-table;
-}
-	
+}	
 .content4{
 		width:100%;
 	    height:80%;
 	    margin:0.5px;
-      /*  background:#00aac5; */
 		background:#f3f3f0;	
 		background-position:center;	
 	    clear: both;
-	}
-	
+}	
 .productItem{
 		margin:0px 5px 120px 120px;
 	    display:inline-table;
 }
-
 .productItem img{
 		width:300px;
 		height:300px;
@@ -93,15 +76,11 @@ function sayHello(){
 
 <body>
 <%@include file="/WEB-INF/subviews/header.jsp" %>
-
 <div >
-    <div class='content2'>
-			
-    <img src="images/2020Slide01.gif" />
- 
-    </div>
-		
-
+    	<div class='content2'>			
+    		<img src="images/2020Slide01.gif" /> 
+    	</div>
+    	
 		<ul>
 			<li class='content3'>
 			<input type="image" src="images/OSlogo.jpg" onclick="tobrand(this.value)" value="osprey"/>
@@ -124,14 +103,9 @@ function sayHello(){
 			<li class='content3'>
 			<input type="image"src="images/TIlogo.png" onclick="tobrand(this.value)" value="timbuk"/>
 			</li>
-		</ul>
-				
-		
+		</ul>		
 		
 		<div class='content4'  id="productlist" >產品列表 <br>
-		
-		
-    
     <% 
     request.setCharacterEncoding("UTF-8"); 
     ProductService service = new ProductService(); 
@@ -157,10 +131,7 @@ function sayHello(){
          <% }else{ %>
             <p>查無產品資料!</p>
          <% } %>
-		
-		
 		</div>
-	
 </div>
 <%@include file="/WEB-INF/subviews/footer.jsp" %>
 </body>

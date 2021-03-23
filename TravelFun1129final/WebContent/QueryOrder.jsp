@@ -9,24 +9,24 @@
 <meta charset="UTF-8">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <title>Query Order</title>
+<link rel="stylesheet" type="text/css" href="travelFun.css">
 <style type="text/css">
-	html, body {height: 100%;background-color:#eeeeee}
-	header {background-color:#00CACA; color:#FFFFFF;text-align:center;padding:10px;font-size:40px;font-weight:bold;font-family: Microsoft JhengHei}	
-	footer {background-color:#00CACA; color:#FFFFFF;text-align:center;padding:10px;font-size:15px;font-weight:bold;font-family: Microsoft JhengHei;}	
+	html, body {height: 100%;background-color:#eeeeee;}	
 	.wrapper { min-height: 100%}
 	.row {display: flex; width:90%;margin: 10px auto;background-color: #fff; border-radius: 3px; padding: 10px;align-items: center}
-	.row div {font-family: Microsoft JhengHei; margin: 0px auto;}
+	.row div {margin: 0px auto;}
 	.color {background-color:#F5DEB3}
 	.bold{font-weight:bold}
-	.button{font-size:15px;font-weight:bold;font-family: Microsoft JhengHei;border:2px solid;display: inline-block;}
+	.button{font-size:15px;font-weight:bold;border:2px solid;display: inline-block;}
 	.button:hover { background-color:#3C3C3C; color: white;}
-	.title{text-align:center;width:90%; margin: 10px auto;background-color:#3C3C3C;padding: 10px;
-   			 font-size:30px;font-weight:bold;font-family: Microsoft JhengHei;color:#ffffff;
+	.title{text-align:center;width:90%; margin:10px auto; background-color:#3C3C3C;padding: 10px;
+   			 font-size:30px;font-weight:bold;color:#ffffff;
    			 border:2px solid #ffffff}
+   	#history{margin-top:90px;}
    	.width1{width:100px}
    	.width2{width:200px}
    	.width3{width:250px}
-   	.font{font-size:20px;font-weight:bold;font-family: Microsoft JhengHei;position:relative;left:4.5%}
+   	.font{font-size:20px;font-weight:bold;position:relative;left:4.5%}
    	.index{align-items: center;text-align:center;display: flex; margin: 10px auto;width:90%;}
    	.index button{width:100%;font-size:30px;}
    	.height{height:80px}
@@ -41,11 +41,9 @@
 	<sql:query dataSource="${tf}" var="result">
       	SELECT * from tf.order where customerid='${sessionScope.member.id}'
 	</sql:query> 
-<header>
-		<div>旅遊趣線上購物</div>
-</header>
+<%@include file="/WEB-INF/subviews/header.jsp" %>
 <div class="wrapper">
-	<div class="title">歷史訂單</div>	
+	<div class="title" id="history">歷史訂單</div>	
 		<div class="row color bold">
 			<div class="width2">訂單編號</div>
 			<div class="width3">成立時間</div>
@@ -69,9 +67,8 @@
 		<div class="font">
 			<h3>訂單狀態:</h3>
 			&nbsp;&nbsp;1: 已付款已出貨&nbsp;&nbsp;2: 已付款未出貨&nbsp;&nbsp;3: 未付款已出貨&nbsp;&nbsp;4: 未付款未出貨						
-		</div><br>
-		
-	<div class="title">訂單明細</div>
+		</div>		
+	<div class="title" id="title2">訂單明細</div>
 	<div id="msg"></div>	
 		<br><br>
 	<div class="index">
@@ -86,10 +83,13 @@
 		function show(data){			
 			$("#msg").html(data);		
 		}
+		$(document).ready(function(){
+			$(".button").click(function(){
+				document.getElementById("title2").scrollIntoView();
+			});			
+		});
 </script>
 </div>
-<footer>
-		<div>旅遊趣有限公司版權所有2020</div>
-</footer>	
+<%@include file="/WEB-INF/subviews/footer.jsp" %>
 </body>
 </html>
