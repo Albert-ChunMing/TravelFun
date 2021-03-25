@@ -41,7 +41,7 @@
 		<c:forEach var="p" items="${sessionScope.productList}">
 			<div class="row">				
 				<div>															
-					<a href="index.jsp"><img alt="無法顯示圖片" src="${p.url}" width="100px" height="100px"></a><br>
+					<img alt="無法顯示圖片" src="${p.url}" width="100px" height="100px"><br>
 					${p.productName}
 				</div>			
 				<div>

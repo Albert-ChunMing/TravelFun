@@ -2,7 +2,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="model.CartProduct" %>
-
+<meta name="viewport" content="width=device-width, initial-scale=1" >
 <style>
 header{		
 	width: 100%;
@@ -39,7 +39,6 @@ header{
 #goods{
 	color:red;
 	font-size:27px;
-	font-family: Microsoft JhengHei;
 }
 .login a{
 	text-decoration: none;
@@ -48,6 +47,14 @@ header{
 }
 .login a:hover{
 	text-decoration:underline;
+}
+@media screen and (max-width:800px) {
+	header{display:block;}
+	.myLogo{justify-content: center;}
+	#myLogo{margin-left:-10px;width:100px;height:auto;}
+	#mySearch{width: 150px;height:20px;font-size:15px;}
+	#searchButton{font-size:12px;}
+	.login{font-size:15px;text-align: end; margin-right: 10px;}		
 }
 </style>		
 <header>
