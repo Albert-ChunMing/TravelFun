@@ -1,24 +1,17 @@
 package memberServlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-
-
-import model.Member;
-import model.MemberDao;
+import tf.entity.Customer;
+import tf.entity.VGBException;
+import tf.service.CustomerService;
 
 /**
  * Servlet implementation class InsertServlet
@@ -44,107 +37,59 @@ public class InsertServet extends HttpServlet {
 		processRequest(request, response);
 		
 	}
-	public boolean InsertMember(String id,String name,String password,String gender,String email,String birthday,String phone,String address)
-		    throws SQLException {
-		
-		Connection con=null;
-	    PreparedStatement  insert= null;
-	    String insertStatement =
-	            "insert into customers(id,name,password,gender,email,birthday,phone,address)" +
-	            "values (?,?,?,?,?,?,?,?)";
 
-	        try {
-	             Class.forName("com.mysql.cj.jdbc.Driver");
-	             con =  (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/tf?useUnicode=true&characterEncoding=UTF-8&serverTimezone=CST","root","1234");
-	          
-	            con.setAutoCommit(false);   //=start transaction(sql);
-	            insert = (PreparedStatement) con.prepareStatement(insertStatement);
-
-	            //for (Map.Entry<String, Integer> e : salesForWeek.entrySet()) { }
-	               insert.setString(1,id);
-	               insert.setString(2,name); 
-	               insert.setString(3,password); 
-	               insert.setString(4,gender); 
-	               insert.setString(5,email); 
-	               insert.setString(6,birthday); 
-	               insert.setString(7,phone); 
-	               insert.setString(8,address); 
-	              
-	               int rs=insert.executeUpdate();
-	                con.commit();
-	                if(rs>0)
-	                {return true;}
-	                else
-	                {return false;}
-	                
-	            
-	        } catch (Exception e ) {
-	            System.out.println(e.getMessage());
-	            if (con != null) {
-	                try {
-	                	 System.err.print("Transaction is being rolled back");
-	                     con.rollback();
-	                 } catch(SQLException ex) {
-	                     System.out.println(ex.getMessage());
-	                 }
-	             }
-	         } finally {
-	             if (insert != null) {
-	                 insert.close();
-	             }
-	             if (insert != null) {
-	                 insert.close();
-	             }
-	             con.setAutoCommit(true);
-	         }
-			return false;
-	        
-	     }  
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-	 	request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-          
-        	String id=request.getParameter("id");
-            String name=request.getParameter("name");
-            String password=request.getParameter("password");         
-            String gender=request.getParameter("gender");
-            String email=request.getParameter("email");    
-            String birthday=request.getParameter("birthday"); 
-            String phone=request.getParameter("phone"); 
-            String address=request.getParameter("address"); 
-            
-            try {
-            	if(new MemberDao().queryUser(id)==true)
-                {
-            		out.println("這個帳號已經被使用，三秒後返回註冊頁面");
-            		response.setHeader("refresh","3;URL=register.jsp");
-                    
-                }
-            	else
-            	{
-            		boolean flag=InsertMember(id,name,password,gender,email,birthday,phone,address);
-            		if(flag)
-               	{
-                	
-                	//request.getRequestDispatcher("login.jsp").forward(request, response);
-                	response.setHeader("refresh","3;URL=login.jsp");
-                	out.println("新增成功，頁面將三秒後跳轉至登入頁面");
-          		 
-                }else
-                {
-                	out.println("新增失敗，有問題請洽客服人員");
-                }
-            }
+		request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        //取得使用者輸入的參數  
+        String id=request.getParameter("id");
+        String name=request.getParameter("name");
+        String password=request.getParameter("password2");         
+        String gender=request.getParameter("gender");
+        String email=request.getParameter("email");    
+        String birthday=request.getParameter("birthday"); 
+        String phone=request.getParameter("phone"); 
+        String address=request.getParameter("address");
+        String captcha=request.getParameter("captcha");
 
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-        } finally {            
-            out.close();
+        //將使用者輸入的資料存在request層的attribute 省去註冊失敗時使用者重新填寫的時間
+        request.setAttribute("id",id);
+    	request.setAttribute("name",name);
+    	request.setAttribute("password",password);
+    	request.setAttribute("gender",gender);
+    	request.setAttribute("email",email);
+    	request.setAttribute("birthday",birthday);
+    	request.setAttribute("phone",phone);
+    	request.setAttribute("address",address);
+    	
+        //驗證碼不一致時 跳回註冊畫面重新填寫
+        String sessionCaptcha = (String)session.getAttribute("CaptchaServlet");
+        if(!captcha.equalsIgnoreCase(sessionCaptcha)) {
+        	request.setAttribute("registerStatus", "驗證碼不一致");
+        	request.getRequestDispatcher("/register.jsp").forward(request, response);
+        	return;
         }
+        //驗證碼相同時 進行註冊
+        	Customer customer=new Customer(id,password,name);
+        	customer.setGender(gender.charAt(0));
+        	customer.setEmail(email);
+        	customer.setBirthday(birthday);
+        	customer.setPhone(phone);
+        	customer.setAddress(address);
+        	CustomerService service=new CustomerService();
+        	try {
+				service.register(customer);
+			} catch (VGBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				request.setAttribute("registerStatus", e.getMessage());
+				request.getRequestDispatcher("/register.jsp").forward(request, response);
+				return;
+			}
+        	request.setAttribute("registerStatus", "註冊成功");
+        	request.getRequestDispatcher("/register.jsp").forward(request, response);
+
     }
 
 	/**

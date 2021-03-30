@@ -6,7 +6,7 @@ import tf.entity.VGBException;
 class RDBConnection {
 
 	private static final String driver="com.mysql.cj.jdbc.Driver";
-	private static final String url="jdbc:mysql://localhost:3306/tf?serverTimezone=CST";//serverTimezone=CST mysql8.0後資料庫連法
+	private static final String url="jdbc:mysql://localhost:3306/tf?useUnicode=true&characterEncoding=utf-8&serverTimezone=CST";//serverTimezone=CST mysql8.0後資料庫連法
 	private static final String user="root";
 	private static final String password = "1234";
 

@@ -9,87 +9,96 @@
 <head>
 <title>Cart View</title>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" >
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style type="text/css">
 	html, body {height: 100%;background-color:#eeeeee}
 	.wrapper { min-height: 100%}
-	.row {display: flex; width:90%; margin: 10px auto;background-color: #fff; border-radius: 3px; padding: 10px;align-items: center}
-	.row div {font-family: Microsoft JhengHei; margin: 0px auto;width:200px}
+	.row {display: flex; margin: 10px auto;background-color: #fff;padding: 10px;align-items: center}
+	.row div {font-family: Microsoft JhengHei; margin: 0px auto;}
 	.color {background-color:#F5DEB3}
 	.bold{font-weight:bold}
 	.button{font-size:20px;font-weight:bold;font-family: Microsoft JhengHei;border:2px solid #3C3C3C;}
 	.button:hover { background-color:#3C3C3C; color: white;}
-	.add{font-size:15px;font-weight:bold;font-family:Verdana;color:#0099CC;border:2px solid #0099CC;width:30px;height:25px;text-align:left;margin: 5px}
-	.add:hover { background-color:#0099CC; color: white;}
-	.minus{font-size:11px;font-weight:bold;font-family:Impact;color:#0099CC;border:2px solid #0099CC;width:30px;height:25px;text-align:center;margin: 5px}
-	.minus:hover { background-color:#0099CC; color: white;}
-	.trashcan{width:40px;height:41px; background-image:url('images/trash.PNG');border:2px solid #ffffff}
-	.trashcan:hover { background-color:#ffffff; color: white;border:2px solid #FF9797}
-	.total{font-size:30px;font-weight:bold;font-family: Microsoft JhengHei;color:	#AE0000;}
+	.changeQuantity{font-size:15px;font-weight:bold;font-family:Verdana;color:#0099CC;border:2px solid #0099CC;width:28px;height:28px;text-align:left;margin: 5px}
+	.changeQuantity:hover { background-color:#0099CC; color: white;}
+	.trashcan{border: #FF9797 2px solid; font-size: 17px; color: #FF9797; background-color: white; font-family: unset; font-weight: bold;margin-left:5px;}
+	.trashcan:hover { background-color:#FF9797; color: white;}
+	.total{font-size:30px;font-weight:bold;font-family: Microsoft JhengHei;color:#AE0000;}
+   	.width1{width:30px}
+   	.width2{width:120px;text-align:center;display:flex;align-items:center;}
+   	.width3{width:200px;text-align:center;}
+   	.row img{width:200px;height:200px;}
+@media screen and (max-width:800px) {
+	.row {font-size:15px;}
+	.button{font-size:15px;min-width:50px;}
+	.total{font-size:17px;min-width:120px;}
+	.width1{min-width:25px}
+   	.width2{min-width:50px;display:block;}
+   	.width3{min-width:85px}
+   	.trashcan{font-size: 12px;margin-left:1px;}
+   	.changeQuantity{font-size:12px;width:25px;height:24px;margin: 2px}
+   	.row img{width:80px;height:80px;}
+}
 </style>
 </head>
 <body style="margin: 0">
 <div class="wrapper" id="msg">
 		<div class="row color bold">
-			<div>商品</div>
-			<div>規格</div>
-			<div>單價</div>
-			<div>數量</div>
-			<div>小計</div>
-			<div>操作</div>
+			<div class="width3">商品</div>
+			<div class="width3">規格</div>
+			<div class="width2">單價</div>
+			<div class="width2">數量</div>
+			<div class="width3">小計</div>
 		</div>
 		<c:forEach var="p" items="${sessionScope.productList}">
 			<div class="row">				
-				<div>															
+				<div class="width3">															
 					<img alt="無法顯示圖片" src="${p.url}" width="100px" height="100px"><br>
 					${p.productName}
 				</div>			
-				<div>
-					顏色: ${p.productColor}<br>
-					尺寸: ${p.productSize}<br>
-					貨號: ${p.itemNumber}
+				<div class="width3">
+					${p.productColor}<br>
+					${p.productSize}
 				</div>
-				<div>								
-					<span>$<fmt:formatNumber type="number" maxFractionDigits="1" value="${p.productPrice}" /><span>				
+				<div class="width2">								
+					<span>$<fmt:formatNumber type="number" maxFractionDigits="1" value="${p.productPrice}" /><span>		
 				</div>
-				<div>					 
-						<button class="add" onclick="addQty(this.value)"  value='{"productName":"${p.productName}","productColor":"${p.productColor}","productSize":"${p.productSize}"}'>
+				<div class="width2">
+						<button class="changeQuantity" onclick="addQty(this.value)"  value='{"productName":"${p.productName}","productColor":"${p.productColor}","productSize":"${p.productSize}"}'>
 						+
 						</button>
-						<span>${p.productQuantity}</span>										
-						<button class="minus" onclick="minusQty(this.value)" value='{"productName":"${p.productName}","productColor":"${p.productColor}","productSize":"${p.productSize}"}'>
+						<div>	${p.productQuantity}</div>										
+						<button class="changeQuantity" onclick="minusQty(this.value)" value='{"productName":"${p.productName}","productColor":"${p.productColor}","productSize":"${p.productSize}"}'>
 						—
-						</button>								
+						</button>						
 				</div>
-				<div>
-					<span>$<fmt:formatNumber type="number" maxFractionDigits="1" value="${p.sum}" /></span>					
-				</div>
-				<div>
+				<div class="width3">
+					<span>$<fmt:formatNumber type="number" maxFractionDigits="1" value="${p.sum}" /></span>	
 					<button class="trashcan" onclick="del(this.value)" 	
-							value='{"productName":"${p.productName}","productColor":"${p.productColor}","productSize":"${p.productSize}"}'>
-					</button>
+											value='{"productName":"${p.productName}","productColor":"${p.productColor}","productSize":"${p.productSize}"}'>X				
+					</button>				
 				</div>
 			</div>
 		</c:forEach>
 		<div class="row color bold">
-			<div><button class="button" onClick="location.href='index.jsp'">回到購物首頁</button></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div class="total">總價: $<fmt:formatNumber type="number" maxFractionDigits="1" value="${sessionScope.totalPrice}" /></div>
+			<div><button class="button" onClick="location.href='index.jsp'">繼續逛</button></div>
+			<div class="total">共計: $<fmt:formatNumber type="number" maxFractionDigits="1" value="${sessionScope.totalPrice}" /></div>
 			<div><button class="button" onclick="buy(this.value)" value="${sessionScope.totalPrice}">買單趣</button></div>
 		</div>
-		<script>
-
+<script>
+		$(function(){
+			$.post("CartAjaxServlet",{"execute":"cartDetail"},showgoods);//使右上角購物車數量隨時更新
+		});
 		function addQty(value){			
-			$.post("CartAjaxServlet",{"addOne":value},show);
-			}
+			$.post("CartAjaxServlet",{"addOne":value},show);			
+		}
 		function minusQty(value){			
 			$.post("CartAjaxServlet",{"minusOne":value},show);
-			}
+		}
 		function del(value){			
 			$.post("CartAjaxServlet",{"productForDelete":value},show);
-			}     
+		}     
 		function buy(value){
 			var price=parseInt(value);		
 			if(price==0){
@@ -97,11 +106,14 @@
 				}else{
 					document.location.href="./Checkout.jsp"
 					}
-			}		
+		}		
 		function show(data){			
 			$("#msg").html(data);		
-			}
-	</script>			
+		}
+		function showgoods(data){
+			$("#goods").html(data);
+		}
+</script>			
 </div>
 </body>
 </html>

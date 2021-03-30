@@ -40,7 +40,6 @@ public class CartServlet extends HttpServlet {
 		NumberFormat Formatter = NumberFormat.getNumberInstance();
 		HttpSession session=request.getSession();
 		List<CartProduct> productList=new ArrayList();
-		Integer totalPrice=0;
 
 		//轉跳到購物頁面時顯示當前購物車內的商品數量
 		if(execute !=null && execute.equals("cartDetail")){								
@@ -78,11 +77,13 @@ public class CartServlet extends HttpServlet {
 					int i=oldp.getProductQuantity()+p.getProductQuantity();
 					oldp.setProductQuantity(i);
 					response.getWriter().print(productList.size());
+					totalPrice(request);
 					return;					
 				}				
 			}
 			productList.add(p);											
 			response.getWriter().print(productList.size());
+			totalPrice(request);
 			return;			
 		}		
 		
@@ -130,20 +131,25 @@ public class CartServlet extends HttpServlet {
 				}				
 			}			
 		}
-		
 		//計算總價
-		productList=(List<CartProduct>)session.getAttribute("productList");
-		if(productList !=null) {
-			for(CartProduct p:productList) {
-				totalPrice=totalPrice+p.getSum().intValue();
-			}
-		}
+		totalPrice(request);
 		
-		request.getSession().setAttribute("totalPrice", totalPrice);
+		
+		
 		response.sendRedirect("CartView.jsp");
 		//request.getRequestDispatcher("CartView.jsp").forward(request, response);			
 	}
-
+    
+    public void totalPrice(HttpServletRequest request) {
+    	Integer totalPrice=0;
+    	List<CartProduct> productList=(List<CartProduct>)request.getSession().getAttribute("productList");
+    	if(productList !=null) {
+    		for(CartProduct p:productList) {
+    			totalPrice=totalPrice+p.getSum().intValue();
+    		}
+    	}		
+    	request.getSession().setAttribute("totalPrice", totalPrice);
+    }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub

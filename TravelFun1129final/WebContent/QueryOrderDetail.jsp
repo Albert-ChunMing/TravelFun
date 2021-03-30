@@ -7,20 +7,27 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <title>Query Order</title>
 <link rel="stylesheet" type="text/css" href="travelFun.css">
 <style type="text/css">
 	html, body {height: 100%;background-color:#eeeeee}	
 	.wrapper { min-height: 100%}
-	.row {display: flex; width:90%; margin: 10px auto;background-color: #fff; border-radius: 3px; padding: 10px;align-items: center}
-	.row div {font-family: Microsoft JhengHei; margin: 0px auto;}
+	.row {display: flex;margin: 10px auto;background-color: #fff; border-radius: 3px; padding: 10px;align-items: center;font-size:22px;}
+	.row div {margin: 5px auto;}
 	.color {background-color:#F5DEB3}
 	.bold{font-weight:bold}
-   	.width1{width:100px}
-   	.width2{width:200px}
-   	.width3{width:250px}
-   	.height{height:80px}
+   	.w1{width:50px;text-align: center;}
+   	.w2{width:120px;text-align: center;}
+   	.w3{width:300px;}
+   	.height{height:auto;min-height:80px;}
+@media screen and (max-width:800px) {
+	.row {margin: 5px auto;padding: 5px;font-size:15px;}
+	.w1{min-width:40px;}
+   	.w2{min-width:80px;}
+   	.w3{width:250px;}
+}
 </style>
 </head>
 <body style="margin: 0">
@@ -35,23 +42,19 @@
 
 <div class="wrapper">
 		<div class="row color bold">
-			<div class="width1">訂單編號</div>
-			<div class="width3">產品名稱</div>
-			<div class="width2">顏色</div>
-			<div class="width1">尺寸</div>
-			<div class="width1">單價</div>
-			<div class="width1">訂購數量</div>
-			<div class="width1">小計</div>			
+			<div class="w3">品名</div>
+			<div class="w2">顏色</div>
+			<div class="w1">尺寸</div>
+			<div class="w2">單價</div>
+			<div class="w1">數量</div>	
 		</div>
 		<c:forEach var="row" items="${result.rows}">
 			<div class="row height">			
-				<div class="width1">${row.OrderId}</div>
-				<div class="width3">${row.ProductName}</div>
-				<div class="width2">${row.Color}</div>
-				<div class="width1">${row.Size}</div>
-				<div class="width1">$<fmt:formatNumber type="number" maxFractionDigits="1" value="${row.Price}" /></div>
-				<div class="width1">${row.Quantity}</div>
-				<div class="width1">$<fmt:formatNumber type="number" maxFractionDigits="1" value="${row.Sales}" /></div>				
+				<div class="w3">${row.ProductName}</div>
+				<div class="w2">${row.Color}</div>
+				<div class="w1">${row.Size}</div>
+				<div class="w2">$<fmt:formatNumber type="number" maxFractionDigits="1" value="${row.Price}" /></div>
+				<div class="w1">${row.Quantity}</div>				
 			</div>				
 		</c:forEach>		
 

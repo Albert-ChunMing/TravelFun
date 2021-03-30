@@ -11,11 +11,13 @@ header{
 	top: 0px;	
 	background:#f3f3f0;
 	position:fixed;
-	opacity:0.9;	
+	opacity:0.95;	
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
     align-items: center;
+    border-bottom: #c0c0c0 2px solid;
+    border-top: #c0c0c0 2px solid;
 }
 .myLogo{
 	display: flex;
@@ -29,9 +31,9 @@ header{
 	height:27px;
  }
 #mySearch{
-   width: 300px;
+   width: 180px;
    height:28px;
-   font-size:25px;
+   font-size:20px;
 }
 #searchButton{
 	 font-size:20px;
@@ -39,6 +41,9 @@ header{
 #goods{
 	color:red;
 	font-size:27px;
+}
+.login{
+	font-size: 20px;
 }
 .login a{
 	text-decoration: none;
@@ -63,7 +68,7 @@ header{
 	     		<a href='index.jsp'><img id='myLogo' src='images/logo-header.png' /></a>
 	    	</div>	    
 	    	<div>
-            	<input id='mySearch' type='search'  placeholder='請輸入產品關鍵字...' name='search' value="">
+            	<input id='mySearch' type='search'  placeholder='請輸入產品關鍵字' name='search' value="">
             	<input id='searchButton' type='submit' value='搜尋'>
 	     	</div>
 	    </div>	     				

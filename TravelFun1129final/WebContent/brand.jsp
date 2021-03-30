@@ -18,20 +18,15 @@
       	SELECT * FROM products join product_colors on product_colors.product_id=products.id where brand='${param.brand}'
 	</sql:query>
 </head>
-<body>	
-		<div class='content4'>
-			產品列表 <br>
-			<ul>
+<body>
+		<div class='content4'><br>		
 				<c:forEach items="${result.rows}" var="item">
-					<li class='productItem'>
+					<div class='productItem'>
 					<a href="product.jsp?productId=${item.id}&photo=${item.photo_main_url}&color=${item.color_name}"> <img src="${item.photo_main_url}" /></a>
 					<h4><a href="product.jsp?productId=${item.id}&photo=${item.photo_main_url}&color=${item.color_name}"> ${item.name }(${item.color_name})</a></h4>
-					
 					<div>會員價:${item.discount}折，<fmt:formatNumber type="number" maxFractionDigits="1" value="${item.unit_price*item.discount/10}" />元</div>
-					</li>
+					</div>
 				</c:forEach>
-			</ul>
-			<p>Oops! No More Product</p>
 		</div>
 </body>
 </html>

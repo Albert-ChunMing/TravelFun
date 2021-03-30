@@ -64,7 +64,6 @@ private static final Object METHOD_POST = null;
 
  public boolean UpdateCustomer(String id,String name,String password,String gender,String email,String birthday,String phone,String address)
       throws SQLException {
-  
       Connection con=null;
       PreparedStatement  insert= null;
       String insertStatement =
@@ -72,12 +71,11 @@ private static final Object METHOD_POST = null;
 
           try {
                Class.forName("com.mysql.cj.jdbc.Driver");
-               con =  (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/tf?useUnicode=true&characterEncoding=UTF-8&serverTimezone=CST","root","1234");
+               con = DriverManager.getConnection("jdbc:mysql://localhost:3306/tf?useUnicode=true&characterEncoding=UTF-8&serverTimezone=CST","root","1234");
             
-              con.setAutoCommit(false);   //=start transaction(sql);
-              insert = (PreparedStatement) con.prepareStatement(insertStatement);
+               con.setAutoCommit(false);   //=start transaction(sql);
+               insert = con.prepareStatement(insertStatement);
 
-              //for (Map.Entry<String, Integer> e : salesForWeek.entrySet()) { }
                  insert.setString(1, name); 
                  insert.setString(2,password);           
                  insert.setString(3,gender);
@@ -88,11 +86,12 @@ private static final Object METHOD_POST = null;
                  insert.setString(8,id);
                  int rs=insert.executeUpdate();
                   con.commit();
-                  if(rs>0)
-                  {return true;}
-                  else
-                  {return false;}
-                  
+                  if(rs>0){
+                	  return true;
+                  }
+                  else{
+                	  return false;
+                  }                  
               
           } catch (Exception e ) {
               System.out.println(e.getMessage());
@@ -108,12 +107,9 @@ private static final Object METHOD_POST = null;
                if (insert != null) {
                    insert.close();
                }
-               if (insert != null) {
-                   insert.close();
-               }
                con.setAutoCommit(true);
            }
-    return false;
+          return false;
           
        }   
 
@@ -162,46 +158,28 @@ private static final Object METHOD_POST = null;
  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	 	// TODO Auto-generated method stub
 	    request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-             String id=request.getParameter("id");
+
+            String id=request.getParameter("id");
             String name=request.getParameter("name");
-            String password=request.getParameter("password");         
+            String password=request.getParameter("password2");         
             String gender=request.getParameter("gender");
             String email=request.getParameter("email");    
             String birthday=request.getParameter("birthday"); 
             String phone=request.getParameter("phone"); 
             String address=request.getParameter("address"); 
             try {
-             boolean flag=UpdateCustomer(id,name,password,gender,email,birthday,phone,address);
-                if(flag)
-                {
-                	 Member m1=new Member();
-                     m1.setId(id);
-                     m1.setName(name);
-                     m1.setPassword(password);
-                     m1.setGender(gender);
-                     m1.setEmail(email);
-                     m1.setBirthday(birthday);
-                     m1.setPhone(phone);
-                     m1.setAddress(address);
-           		 
-           		 List<model.Member> data=new ArrayList<>();
-           		 data.add(m1); 
-           		 request.setAttribute("member", data);
-           		 request.getRequestDispatcher("membership.jsp").forward(request, response);
-                }else
-                {
-                 out.println("更新失敗");
+            	boolean flag=UpdateCustomer(id,name,password,gender,email,birthday,phone,address);
+                if(flag) {
+                     request.setAttribute("updateStatus", "修改成功");
+                }else {
+                	request.setAttribute("updateStatus", "修改失敗");
                 }
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
+                request.setAttribute("updateStatus", "修改失敗"+ex.getMessage());                
+            }finally {
+            	request.getRequestDispatcher("/updatemember.jsp").forward(request, response);
             }
-        } finally {            
-            out.close();
-        }
-    
  	}
 
 }         

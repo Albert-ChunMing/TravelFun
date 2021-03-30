@@ -68,7 +68,6 @@ public class CustomersDAO {
  			pstmt.setString(1,c.getId());
  			pstmt.setString(2,c.getName());
  			pstmt.setString(3,c.getPassword());
- 			pstmt.setString(3,c.getName());
  			pstmt.setString(4,String.valueOf(c.getGender()));
  			pstmt.setString(5,c.getEmail());
  			pstmt.setString(6,String.valueOf(c.getBirthday()));
@@ -101,7 +100,7 @@ public class CustomersDAO {
 	}
           
      private static final String UPDATE_CUSTOMER="UPDATE customers" + 
-     		" SET name=?, password=?, email=?, birthday=?, phone=?, address=?, " + 
+     		" SET name=?, password=?, gender=?, email=?, birthday=?, phone=?, address=?, " + 
      		" WHERE id = ?";
 		
      
@@ -113,8 +112,7 @@ public class CustomersDAO {
     	 		try (Connection connection = RDBConnection.getConnection();//1,2.取得連線
     	 	 			PreparedStatement pstmt=connection.prepareStatement(UPDATE_CUSTOMER);//3.準備指令
     	 				){
-    	 			//3.傳入?的值
-    	 			pstmt.setString(9,c.getId());
+    	 			//3.傳入?的值    	 			
     	 			pstmt.setString(1,c.getName());
     	 			pstmt.setString(2,c.getPassword());
     	 			pstmt.setString(3,String.valueOf(c.getGender()));
@@ -123,6 +121,7 @@ public class CustomersDAO {
     	 		//	pstmt.setString(5,c.getBirthday()==null?null:String.valueOf(c.getBirthday())); 如果生日為非必要欄位，要這樣寫
     	 			pstmt.setString(6,c.getPhone());
     	 			pstmt.setString(7,c.getAddress());
+    	 			pstmt.setString(8,c.getId());
     	 			
     	 			
     	 			

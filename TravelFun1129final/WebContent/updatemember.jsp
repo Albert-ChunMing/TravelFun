@@ -1,143 +1,172 @@
 <%@ page pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%> 
+<%@ page import="tf.service.CustomersDAO"%>
+
+<%
+	//每次載入該頁時 從DB取得最新會員資料 同時更新session
+	Customer mem = (Customer)session.getAttribute("member");
+	mem=new CustomersDAO().selectCustomerById(mem.getId());
+	session.setAttribute("member", mem);
+	Customer m = (Customer)session.getAttribute("member");
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1" >
-<title>會員資料</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>會員資料修改</title>
 <link rel="stylesheet" type="text/css" href="style/travelFun.css">
 
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+			integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+			crossorigin="anonymous"></script>
+<script	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script	src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/localization/messages_zh_TW.min.js"></script>
 <script>
-
+	
+	//$();等同$(document).ready()
+	$(function() {
+		//新增生日欄位的驗證規則jQuery.validator.addMethod(規則名稱, 自訂一個能返回布林值的函式, false時的訊息)
+		jQuery.validator.addMethod('compareDate', function(value, element) {
+			var assigntime = Date.parse($('#birthday').val());
+			var deadlinetime = Date.now();
+			if (assigntime < deadlinetime) {
+				return true;
+			} else {
+				return false;
+			}
+		}, '日期必須小於今天');
+		//新增防止密碼輸入錯誤的驗證規則
+		$.validator.addMethod('passwordCheck', function(value, element) {
+			var password1 =$('#password1').val();
+			var password2 =$('#password2').val();
+			if (password1==password2) {
+				return true;
+			} else {
+				return false;
+			}
+		}, '密碼不一致');
+		//設定該表單的欄位要套用什麼規則
+		$('#form').validate({
+			//消除左方空白
+			onkeyup : function(element, event) {
+				var value = this.elementValue(element).replace(/^\s+/g, "");
+				$(element).val(value);
+			},
+			//新增每個input的驗證規則
+			rules : {
+				id : {required : true},
+				name : {	required : true},
+				password1 : {required : true,minlength : 6,maxlength : 20},
+				password2 : {required : true,minlength : 6,maxlength : 20,passwordCheck : true},
+				gender : {required : true},
+				email : {	required : true,	email : true},
+				birthday : {required : true,	compareDate : true},
+				phone : {required : true, number : true},
+				address : {	required : true},				
+				captcha:{required : true}
+			},
+			//設定驗證規則未通過時 顯示的錯誤訊息
+			messages : {
+				id : {required : '必填'},				
+				name : {	required : '必填'},
+				password1 : {required : '必填',	minlength : '不得少於6位數字',maxlength : '不得超過20位數字',},
+				password2 : {required : '必填',	minlength : '不得少於6位數字',maxlength : '不得超過20位數字',},
+				gender : {required : "必填"},
+				email : {	required : '必填',	email : 'Email格式不正確'},
+				birthday : {required : '必填'},
+				phone : {required : '必填', number : '電話需為數字'},
+				address : {	required : '必填'},
+				captcha:{required : "必填"}
+			},
+		});
+	});
 </script>
 
 <style type="text/css">
-
-
-
-.header{
-
-position:fixed;
-
-
+h1{	text-align: center;margin:20px;}
+article{	margin-top:90px;}
+.registerform {margin-left:auto;margin-right:auto;	width: 410px;}
+.registerform input {height:30px ;width:400px ; font-size:25px;margin-top:5px;}
+#gender{width:30px;}
+form div{margin-bottom:10px;height:100px;}
+form label {display: inline-block;width: 150px;font-size:30px;font-weight:bold;}
+.error {color: red;font-size:20px;font-weight:normal;}
+/*label.error-->選擇目標為label且其class="error"   label .error-->選擇目標為包在label裡面的element(其class="error")*/
+label.error {display: inline;}
+#update{font-size:25px;font-weight:bold;border:2px solid #3C3C3C;height:50px;margin-left:5px;}
+#update:hover { background-color:#3C3C3C; color: white;}
+#msg{color: red;display: flex; align-items: flex-end; justify-content: center;}
+@media screen and (max-width:800px) {
+	.registerform {width: 310px;}
+	.registerform input {width:300px;font-size:20px;}
+	form label {font-size:25px;}
+	.error {font-size:15px;}
 }
-
-
-
-.registerform {
-
-
-margin: 170px auto;
-padding: 0;
-width: 560px;
-
-
-
-
-}
-
-
-.registerform input{
-
-/* height:25px ;
- width:300px ; */
-
-}
-
-
-
-
 </style>
 </head>
 <body>
-<jsp:include page="/WEB-INF/subviews/header.jsp">
-     
-<jsp:param value="Home" name="header-subtitle"/>
-
-</jsp:include>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
- 
-<article>	
-			
-		<form class='registerform' method='POST' >
-				    <h1>旅遊趣會員</h1><br>
-				
-				
-					<h3><label>帳號:</label></h3>
-					<input value="${sessionScope.member.id}"  disabled="disabled" id='id' >
-				
-				
-					<h3><label>姓名:</label></h3>
-					<input  id='name' value="">
-				
-				
-					<h3><label>設定密碼:</label></h3>
-					<input type="password" value='' minlength="5" maxlength="20" id='password1' ><br>
-					<h3><label>確認密碼:</label></h3>
-					<input type="password" value='' minlength="5" maxlength="20" id='password2'>
-
-					<h3><label>性別:</label></h3>
-					
-					<input type="radio" name='gender'  id='gender' value='M' /><label>男</label>
-					<input type="radio" name='gender'   id='gender' value='F' /><label>女</label>
-					
-				   
-					<h3><label>E-mail:</label></h3>
-					<input type='email'  id='email'  value=""> 
-			
-					<h3><label>生日:</label></h3>
-					<input type='date' id='birthday'  value="">
-				
-					<h3><label>手機號碼:</label></h3>
-					<input type='tel' id='phone' value="">
-				
-					<h3><label>地址:</label></h3>
-					<textarea id='address' ></textarea><br>
-
-				<br><input type='button'  id="send" value='修改資料' >				
-			</form>
-			<div id="msg2"></div>
-		</article>
-  
-     <script>
-     function view(data) {
-    	 $("#msg2").html(data);
-    	}
-          function show(data){
-        	  
-        	  var jsObj=JSON.parse(data);
-        	  
-               $("#name").val(jsObj.name);
-               $("#password1").val(jsObj.password);
-               $("#password2").val(jsObj.password);
-               $("#email").val(jsObj.email);
-               $("#birthday").val(jsObj.birthday);
-               $("#phone").val(jsObj.phone);
-               $("#address").val(jsObj.address);
-               if(jsObj.gender == 'M')
-               $('input[name="gender"]')[0].checked = true;
-               else
-            	$('input[name="gender"]')[1].checked = true;      
-              
-          }
-          function send(){
-        	  
-        	  if($("#password1").val()!=$("#password2").val())
-        	  {alert("密碼不一致")}
-        	  else{
-        		  $.post("UpdatetServlet3",{"id":$("#id").val() ,"name":$("#name").val() , "password":$("#password1").val() ,
-      		        "gender":$("#gender:checked").val(),"email":$("#email").val(),
-      		        "birthday":$("#birthday").val(),"phone":$("#phone").val(),"address":$("#address").val()}, view);}
-          }
-          
- 		$(function(){ {
- 			 $.get("UpdatetServlet3",{"id":$("#id").val()},show);}})
-          
-  
-          $("#send").click(send);
- </script>
- <%@include file="/WEB-INF/subviews/footer.jsp" %>
+<%@include file="/WEB-INF/subviews/header.jsp" %>
+	<article>
+		<form id="form" class='registerform' method='POST' action='UpdatetServlet3'>
+			<h1>會員資料修改</h1>
+			<div>			
+				<label for="id">帳號:</label>
+				<input placeholder='請輸入自行設定的帳號' id='id' name="id" value="<%=m.getId() %>" readonly="readonly">			
+			</div>
+			<div>
+				<label for="name">姓名:</label>
+				<input placeholder='請輸入姓名' id='name' name="name" value="<%=m.getName() %>">
+			</div>
+			<div>			
+				<label for="password1">設定密碼:</label>
+				<input type="password" placeholder='請輸入密碼'  id='password1' name="password1" value="<%=m.getPassword() %>">			
+			</div>
+			<div>
+				<label for="password2">確認密碼:</label>
+				<input type="password" placeholder='請再輸入密碼'  id='password2' name="password2" value="<%=m.getPassword() %>">			
+			</div>
+			<div>
+				<label for="gender">性別:</label><br>
+				<%if(m.getGender()=='M'){ %>
+					<input type="radio" name='gender' id='gender' value='M' <%="checked" %>>男
+					<input type="radio" name='gender' id='gender' value='F' >女
+				<%} %>				
+				<%if(m.getGender()=='F'){ %>
+					<input type="radio" name='gender' id='gender' value='M' >男
+					<input type="radio" name='gender' id='gender' value='F' <%="checked" %>>女					
+				<%} %>
+			</div>
+			<div>
+				<label for="email">E-mail:</label>
+				<input type='email' placeholder='請輸入E-mail' id='email' name="email" value="<%=m.getEmail() %>">
+			</div>
+			<div>
+				<label for="birthday">生日:</label>
+				<input type='date' id='birthday' name="birthday" value="<%=m.getBirthday() %>">
+			</div>
+			<div>
+				<label for="phone">手機號碼:</label>
+				<input type='tel' placeholder="請輸入手機號碼" id='phone' name="phone" value="<%=m.getPhone() %>">
+			</div>
+			<div>
+				<label for="address">地址:</label>
+				<input type="text" placeholder="請輸入地址" id='address' name="address" value="<%=m.getAddress() %>"></input>
+			</div>
+			<div id="msg">${requestScope.updateStatus}</div>
+				<input type='button' id="update" value='修改資料'>
+		</form>
+	</article>
+	
+<script>		
+		$('#update').click(function() {
+			if ($('#form').valid()) {
+				$('#form').submit();
+			}else{
+				$("#msg").text("尚有欄位未完成");
+			}
+		});
+</script>
+<%@include file="/WEB-INF/subviews/footer.jsp"%>
 </body>
-</html>
+</html>		
