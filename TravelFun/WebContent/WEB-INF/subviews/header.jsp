@@ -40,7 +40,7 @@ header{
 }
 #goods{
 	color:red;
-	font-size:27px;
+	font-size:30px;
 }
 .login{
 	font-size: 20px;

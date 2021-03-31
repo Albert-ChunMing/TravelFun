@@ -15,25 +15,23 @@
     
     ServletContext context=session.getServletContext();
     if(s_webPara.equals("")){ 
+    	//將目前session存入ServletContext中的Attribute
     	context.setAttribute(session.getId(), session);
-    	System.out.println("將目前session存入ServletContext中的Attribute");
     }
     if(!s_webPara.equals("")){
     	System.out.println("ezship產生的session: "+session.getId());
     	System.out.println(session.isNew());
-    	//轉移attribute到新的session上
-    	session.setAttribute("productList", ((HttpSession)context.getAttribute(s_webPara)).getAttribute("productList"));
-    	session.setAttribute("totalPrice", ((HttpSession)context.getAttribute(s_webPara)).getAttribute("totalPrice"));
-    	session.setAttribute("member", ((HttpSession)context.getAttribute(s_webPara)).getAttribute("member"));
-    	System.out.println("舊session的attribute成功轉移到新session的attribute");
-    	//移除ServletContext中的Attribute
-    	context.removeAttribute(s_webPara);
-    	System.out.println("刪除ServletContext中的Attribute(Checkout.jsp)");
+    	if(session.isNew()){
+    		//舊session的attribute轉移到新的session上
+        	session.setAttribute("productList", ((HttpSession)context.getAttribute(s_webPara)).getAttribute("productList"));
+        	session.setAttribute("totalPrice", ((HttpSession)context.getAttribute(s_webPara)).getAttribute("totalPrice"));
+        	session.setAttribute("member", ((HttpSession)context.getAttribute(s_webPara)).getAttribute("member"));
+        	//更新ServletContext中的Attribute 重選超商時才能在ServletContext中找回原本資料
+        	context.removeAttribute(s_webPara);
+        	context.setAttribute(session.getId(), session);
+    	}    	
     }
-    
-    System.out.println(session.getAttribute("productList"));
-    System.out.println(session.getAttribute("totalPrice"));
-    System.out.println(session.getAttribute("member"));
+    //從session中取出資料
     List<CartProduct> productList=(List<CartProduct>)session.getAttribute("productList");
     Integer totalPrice=(Integer)session.getAttribute("totalPrice");
     Customer customer=(Customer)session.getAttribute("member");
@@ -43,13 +41,13 @@
 <head>
 <title>Cart View</title>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" >
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="travelFun.css">
 <style type="text/css">
 	html, body {height: 100%;background-color:#eeeeee}
 	.wrapper { min-height: 100%}
-	.row {display: flex; width:80%; margin: 10px auto;background-color: #fff; border-radius: 3px; padding: 10px;align-items: center}
-	.row div {font-family: Microsoft JhengHei; margin: 0px auto;width:200px}
+	.row {display: flex; margin: 10px auto;background-color: #fff; border-radius: 3px; padding: 10px;align-items: center;justify-content: space-between;}
 	.color {background-color:#F5DEB3}
 	.bold{font-weight:bold}
 	.button{font-size:20px;font-weight:bold;font-family: Microsoft JhengHei;border:2px solid #3C3C3C;}
@@ -58,17 +56,34 @@
 	.minus{font-size:11px;font-weight:bold;font-family:Impact;color:#0099CC;border:2px solid #0099CC;width:30px;height:25px;text-align:center;margin: 5px}
 	.trashcan{width:38px;height:37px; background-image:url('images/trash.PNG');border:0px}
 	.total{font-size:30px;font-weight:bold;font-family: Microsoft JhengHei;color:	#AE0000;}
-    input{font-size: 20px;margin:5px}
-    .check{position:relative;left:9%;font-size:20px;font-family: Microsoft JhengHei;}
-    @keyframes bounce{from{transform:translateY(0px)}to{transform:translateY(-10px)}}
-	@-webkit-keyframes bounce{from{transform:translateY(0px)}to{transform:translateY(-10px)}}
-    .pay{width:82%;background-color:#F5DEB3;font-size:40px;font-weight:bold;font-family: Microsoft JhengHei;color:#AE0000;
-    		border:2px solid #AE0000;padding: 10px;animation: bounce 1s infinite alternate;-webkit-animation: bounce 1s infinite alternate;}
+    input{font-size: 20px;margin:5px;vertical-align: middle;border: #cfcfcd 2px solid;border-radius: 5px;}
+    .check{font-size:20px;margin-left: auto;margin-right: auto;}
+    @keyframes bounce{from{transform:translateY(0px)}to{transform:translateY(-2px)}}
+    .pay{width:100%;background-color:#F5DEB3;font-size:40px;font-weight:bold;font-family: Microsoft JhengHei;color:#AE0000;
+    		border:2px solid #AE0000;animation: bounce 1s infinite alternate;}
     .pay:hover { background-color:#AE0000; color: white;}
-    .title{text-align:center;width:80%; margin: 10px auto;background-color:#3C3C3C;padding: 10px;
+    .title{text-align:center; margin: 10px auto;background-color:#3C3C3C;padding: 10px;
    			 font-size:30px;font-weight:bold;font-family: Microsoft JhengHei;color:#ffffff;
    			 border:2px solid #ffffff}
    	#detail{margin-top: 90px;}
+   	form{margin-left: 10px;margin-right: 10px;}
+   	form div{border: #868686 2px solid;border-radius: 15px; padding: 20px;}
+   	textarea{font-size: 20px;margin: 5px;vertical-align: middle;width: 245px;border: #cfcfcd 2px solid;border-radius: 5px;}
+   	.width1{width:50px;text-align:center;}
+   	.width2{width:120px;text-align:center;}
+   	.width3{width:200px;text-align:center;}
+@media screen and (max-width:800px) {
+		.row {font-size:15px;}
+	    .pay{font-size:30px;}
+	    .title{font-size:20px;}
+	    .button{font-size:15px;}
+		.total{font-size:17px;}
+		.width1{min-width:30px;}
+   		.width2{min-width:65px;}
+   		.width3{min-width:120px;}
+   		.check{font-size:15px;width: 365px;}
+   		form div{padding: 10px;}
+}
 </style>
 </head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
@@ -80,53 +95,53 @@
 <div class="wrapper">
 <div class="title" id="detail">訂單明細</div>
 		<div class="row color bold">
-			<div>商品</div>
-			<div>規格</div>
-			<div>單價</div>
-			<div>數量</div>
-			<div>小計</div>			
+			<div class="width3">商品</div>
+			<div class="width2">規格</div>
+			<div class="width2">單價</div>
+			<div class="width1">數量</div>
+			<div class="width2">小計</div>			
 		</div>
 		<%
 			for(CartProduct p: productList){
 		%>
 			<div class="row">				
-				<div><img alt="無法顯示圖片" src="<%=p.getUrl() %>" width="100px" height="100px"><br><%=p.getProductName()%></div>			
-				<div>顏色: <%=p.getProductColor()%><br>尺寸: <%=p.getProductSize() %><br>貨號: <%=p.getItemNumber() %></div>
-				<div>$<fmt:formatNumber type="number" maxFractionDigits="1" value="<%=p.getProductPrice() %>" /></div>
-				<div><%=p.getProductQuantity() %>	</div>
-				<div>$<fmt:formatNumber type="number" maxFractionDigits="1" value="<%=p.getSum() %>" /></div>				
+				<div class="width3"><%=p.getProductName()%></div>			
+				<div class="width2"><%=p.getProductColor()%><br><%=p.getProductSize() %></div>
+				<div class="width2">$<fmt:formatNumber type="number" maxFractionDigits="1" value="<%=p.getProductPrice() %>" /></div>
+				<div class="width1"><%=p.getProductQuantity() %>	</div>
+				<div class="width2">$<fmt:formatNumber type="number" maxFractionDigits="1" value="<%=p.getSum() %>" /></div>				
 			</div>
 		<%}%>		
 		<div class="row color bold">
-			<div><button class="button" onClick="location.href='CartView.jsp'">回到購物車</button></div>
-			<div></div>
-			<div></div>
-			<div></div>
+			<div><button class="button" onClick="location.href='CartView.jsp'">購物車</button></div>
 			<div class="total">總價: $<fmt:formatNumber type="number" maxFractionDigits="1" value="<%=totalPrice%>" /></div>			
 		</div>
-<div class="title">付款與配送方式</div>
+<div class="title">配送與付款</div>
 	<div class="check">
-		<form action="AioCheckServlet" method="post">		
+		<form action="AioCheckServlet" method="post">				
 				<h3>收件人: </h3>
-            		&nbsp;姓名：<input type="text" name="recipient" value="<%=customer.getName() %>" required>(必填)<br>
-            		&nbsp;電話：<input type="text" name="phone" value="<%=customer.getPhone() %>" required>(必填)<br>
+			<div>
+            		姓名：<input type="text" name="recipient" value="<%=customer.getName() %>" required><br>
+            		電話：<input type="text" name="phone" value="<%=customer.getPhone() %>" required><br>
             		<%
             			String address="";
             			if(s_stName.equals("")) address=customer.getAddress();
             			if(!s_stName.equals("")) address=s_stName+s_stAddr;	
             		%>
-            		&nbsp;地址：<input type="text" name="address" value="<%=address%>" required style="width: 600px" >(必填)
+            		地址：<textarea rows="3" cols="21" name="address" required><%=address%></textarea>
             		<input type="hidden" name="webPara" value="<%=s_webPara%>">
-        		<br> 
-				<h3>付款方式：</h3>
-					<input type="radio" name="cashMethod" value="credit" checked>信用卡/ATM/超商條碼<br><br>
-					<input type="radio" name="cashMethod" value="cod">貨到付款		
-				<br>
-				<h3>配送方式：</h3>					
-					
-					<input type="radio" name="delivery" value="store" checked>超商取貨 (自動帶入地址)<br><br>				
+        	</div> 				
+				<h3>配送方式：</h3>
+			<div>					
+					<label><input type="radio" name="delivery" value="store" checked>超商取貨 (自動帶入地址)</label><br><br>				
     				&nbsp;&nbsp;&nbsp;&nbsp;<input class="button" type="button" value="選擇超商門市" onclick="goEZship()"></input><br><br>
-    				<input type="radio" name="delivery" value="home" >宅配到府 (請自行輸入地址)
+    				<label><input type="radio" name="delivery" value="home" >宅配到府 (請自行輸入地址)</label>
+    		</div>
+    			<h3>付款方式：</h3>
+			<div>
+					<label><input type="radio" name="cashMethod" value="credit" checked>信用卡/ATM/超商條碼</label><br><br>
+					<label><input type="radio" name="cashMethod" value="cod">貨到付款</label>		
+			</div>
     				<br><br><br><br><br>
     				<button class="pay">結帳</button>
     			<br><br>  			 

@@ -11,12 +11,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1" >
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="travelFun.css">
 <style type="text/css">
 	html, body {height: 100%;background-color:#eeeeee}
 	.wrapper { min-height: 100%}
-	.row {display: flex; margin: 10px auto;background-color: #fff;padding: 10px;align-items: center}
-	.row div {font-family: Microsoft JhengHei; margin: 0px auto;}
+	.row {display: flex; margin: 10px auto;background-color: #fff;padding: 10px;align-items: center;justify-content: space-between;}
 	.color {background-color:#F5DEB3}
 	.bold{font-weight:bold}
 	.button{font-size:20px;font-weight:bold;font-family: Microsoft JhengHei;border:2px solid #3C3C3C;}
@@ -26,11 +24,8 @@
 	.trashcan{border: #FF9797 2px solid; font-size: 17px; color: #FF9797; background-color: white; font-family: unset; font-weight: bold;margin-left:5px;}
 	.trashcan:hover { background-color:#FF9797; color: white;}
 	.total{font-size:30px;font-weight:bold;font-family: Microsoft JhengHei;color:#AE0000;}
-	.title{text-align:center; margin: 10px auto;margin-top:90px;background-color:#3C3C3C;padding: 10px;
-   			 font-size:30px;font-weight:bold;font-family: Microsoft JhengHei;color:#ffffff;
-   			 border:2px solid #ffffff}
    	.width1{width:30px}
-   	.width2{width:120px;text-align:center;display:flex;align-items:center;}
+   	.width2{width:120px;text-align:center;display:flex;align-items:center;justify-content: center;}
    	.width3{width:200px;text-align:center;}
    	.row img{width:200px;height:200px;}
 @media screen and (max-width:800px) {
@@ -47,11 +42,6 @@
 </style>
 </head>
 <body style="margin: 0">
-<script type="text/javascript">			
-	window.history.forward(1);
-</script>
-<%@include file="/WEB-INF/subviews/header.jsp" %>
-<div class="title">購物車</div>
 <div class="wrapper" id="msg">
 		<div class="row color bold">
 			<div class="width3">商品</div>
@@ -92,20 +82,22 @@
 		</c:forEach>
 		<div class="row color bold">
 			<div><button class="button" onClick="location.href='index.jsp'">繼續逛</button></div>
-			<div class="total">共計: $<fmt:formatNumber type="number" maxFractionDigits="1" value="${sessionScope.totalPrice}" /></div>
+			<div class="total">總價: $<fmt:formatNumber type="number" maxFractionDigits="1" value="${sessionScope.totalPrice}" /></div>
 			<div><button class="button" onclick="buy(this.value)" value="${sessionScope.totalPrice}">買單趣</button></div>
 		</div>
-		<script>
-
+<script>
+		$(function(){
+			$.post("CartAjaxServlet",{"execute":"cartDetail"},showgoods);//使右上角購物車數量隨時更新
+		});
 		function addQty(value){			
-			$.post("CartAjaxServlet",{"addOne":value},show);
-			}
+			$.post("CartAjaxServlet",{"addOne":value},show);			
+		}
 		function minusQty(value){			
 			$.post("CartAjaxServlet",{"minusOne":value},show);
-			}
+		}
 		function del(value){			
 			$.post("CartAjaxServlet",{"productForDelete":value},show);
-			}     
+		}     
 		function buy(value){
 			var price=parseInt(value);		
 			if(price==0){
@@ -113,12 +105,14 @@
 				}else{
 					document.location.href="./Checkout.jsp"
 					}
-			}		
+		}		
 		function show(data){			
 			$("#msg").html(data);		
-			}
-	</script>			
+		}
+		function showgoods(data){
+			$("#goods").html(data);
+		}
+</script>			
 </div>
-<%@include file="/WEB-INF/subviews/footer.jsp" %>
 </body>
 </html>

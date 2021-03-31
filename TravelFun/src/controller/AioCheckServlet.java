@@ -61,15 +61,14 @@ public class AioCheckServlet extends HttpServlet {
 		String address=request.getParameter("address");
 		String delivery=request.getParameter("delivery");		
 		String cashMethod=request.getParameter("cashMethod");
-		String s_webPara = request.getParameter("webPara")==null?"":request.getParameter("webPara");
 		HttpSession session=request.getSession();
 		ServletContext context=session.getServletContext();
 		
-		//沒有跳轉過ezship時 刪除ServletContext中不再用到的attribute
-		if(s_webPara.equals("")){ 
-	    	context.removeAttribute(session.getId());	    	
-	    	System.out.println("刪除ServletContext中的Attribute(AioCheckServlet)");
-	    }		
+		//刪除ServletContext中不再用到的attribute
+	    context.removeAttribute(session.getId());	    	
+//	    System.out.println("目前context裡的attributes: ");
+//        context.getAttributeNames().asIterator().forEachRemaining((String msg)->System.out.println(msg));
+	    		
 		//產生現在時間
 		LocalDateTime now=LocalDateTime.now();
 		DateTimeFormatter formatter=DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
