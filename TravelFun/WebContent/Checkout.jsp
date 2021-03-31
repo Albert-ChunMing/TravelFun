@@ -57,6 +57,7 @@
 	.trashcan{width:38px;height:37px; background-image:url('images/trash.PNG');border:0px}
 	.total{font-size:30px;font-weight:bold;font-family: Microsoft JhengHei;color:	#AE0000;}
     input{font-size: 20px;margin:5px;vertical-align: middle;border: #cfcfcd 2px solid;border-radius: 5px;}
+    .recipient input{width: 230px;}
     .check{font-size:20px;margin-left: auto;margin-right: auto;}
     @keyframes bounce{from{transform:translateY(0px)}to{transform:translateY(-2px)}}
     .pay{width:100%;background-color:#F5DEB3;font-size:40px;font-weight:bold;font-family: Microsoft JhengHei;color:#AE0000;
@@ -68,7 +69,7 @@
    	#detail{margin-top: 90px;}
    	form{margin-left: 10px;margin-right: 10px;}
    	form div{border: #868686 2px solid;border-radius: 15px; padding: 20px;}
-   	textarea{font-size: 20px;margin: 5px;vertical-align: middle;width: 245px;border: #cfcfcd 2px solid;border-radius: 5px;}
+   	textarea{font-size: 20px;margin: 5px;vertical-align: middle;width: 230px;border: #cfcfcd 2px solid;border-radius: 5px;}
    	.width1{width:50px;text-align:center;}
    	.width2{width:120px;text-align:center;}
    	.width3{width:200px;text-align:center;}
@@ -81,7 +82,7 @@
 		.width1{min-width:30px;}
    		.width2{min-width:65px;}
    		.width3{min-width:120px;}
-   		.check{font-size:15px;width: 365px;}
+   		.check{font-size:15px;width: 350px;}
    		form div{padding: 10px;}
 }
 </style>
@@ -120,7 +121,7 @@
 	<div class="check">
 		<form action="AioCheckServlet" method="post">				
 				<h3>收件人: </h3>
-			<div>
+			<div class="recipient">
             		姓名：<input type="text" name="recipient" value="<%=customer.getName() %>" required><br>
             		電話：<input type="text" name="phone" value="<%=customer.getPhone() %>" required><br>
             		<%
@@ -133,7 +134,7 @@
         	</div> 				
 				<h3>配送方式：</h3>
 			<div>					
-					<label><input type="radio" name="delivery" value="store" checked>超商取貨 (自動帶入地址)</label><br><br>				
+					<label><input type="radio" name="delivery" value="store" checked>超商取貨 (自動帶入地址)</label><br>				
     				&nbsp;&nbsp;&nbsp;&nbsp;<input class="button" type="button" value="選擇超商門市" onclick="goEZship()"></input><br><br>
     				<label><input type="radio" name="delivery" value="home" >宅配到府 (請自行輸入地址)</label>
     		</div>
@@ -164,7 +165,7 @@
 	</div>				
 </div>
 <script>
-		function goEZship() {
+	function goEZship() {
     	 //指定ezShip回傳資料的位址(本地url 配合自己專案名稱)
      	 var protocol = "<%=request.getScheme()%>";		
 		<%URL whatismyip = new URL("http://checkip.amazonaws.com");
@@ -179,8 +180,7 @@
 		
 		//提交表單			
 	    $("#ezForm").submit();	   
-}
-			
+	}
 </script>
 <%@include file="/WEB-INF/subviews/footer.jsp" %>
 </body>

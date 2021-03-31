@@ -19,57 +19,35 @@ header{
     border-bottom: #c0c0c0 2px solid;
     border-top: #c0c0c0 2px solid;
 }
-.myLogo{
-	display: flex;
-	align-items: center;
-}
-#myLogo{
-	margin-left:-20px;
-}		
-#myCarticon{
-	width:27px;
-	height:27px;
- }
-#mySearch{
-   width: 180px;
-   height:28px;
-   font-size:20px;
-}
-#searchButton{
-	 font-size:20px;
-}
-#goods{
-	color:red;
-	font-size:30px;
-}
-.login{
-	font-size: 20px;
-}
-.login a{
-	text-decoration: none;
-	margin-left:2px;
-	margin-right:2px;
-}
-.login a:hover{
-	text-decoration:underline;
-}
+.myLogo{display: flex;align-items: center;}
+#myLogo{margin-left:-20px;margin-bottom: -10px;}		
+#myCarticon{width:27px;height:27px;}
+#mySearch{  width: 180px;  height:33px;  font-size:20px;  border:2px solid #3C3C3C;border-radius:5px;}
+#searchButton{font-size:20px;font-weight:bold;font-family: Microsoft JhengHei;border:2px solid #3C3C3C;border-radius:5px;}
+#searchButton:hover { background-color:#3C3C3C; color: white;}
+#goods{	color:red;	font-size:30px;}
+.login{font-size: 20px;}
+.login a{text-decoration: none;margin-left:2px;margin-right:2px;}
+.login a:hover{text-decoration:underline;}
 @media screen and (max-width:800px) {
 	header{display:block;}
 	.myLogo{justify-content: center;}
-	#myLogo{margin-left:-10px;width:100px;height:auto;}
+	#myLogo{margin-left:-10px;margin-top: 10px;width:100px;height:auto;}
 	#mySearch{width: 150px;height:20px;font-size:15px;}
 	#searchButton{font-size:12px;}
 	.login{font-size:15px;text-align: end; margin-right: 10px;}		
 }
-</style>		
+</style>
 <header>
 		<div class="myLogo">
 			<div>
 	     		<a href='index.jsp'><img id='myLogo' src='images/logo-header.png' /></a>
 	    	</div>	    
 	    	<div>
-            	<input id='mySearch' type='search'  placeholder='請輸入產品關鍵字' name='search' value="">
-            	<input id='searchButton' type='submit' value='搜尋'>
+	    		<form action="search.jsp">
+            		<input id='mySearch' type='search'  placeholder='請輸入產品關鍵字' name='search' value="" required>
+            		<input id='searchButton' type='submit' value='搜尋' >
+            	</form>
 	     	</div>
 	    </div>	     				
 		<div class='login'>			
