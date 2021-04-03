@@ -29,12 +29,6 @@ function sayHello(){
 	   location.href="<%= request.getContextPath() %>"; //轉址
 }
  <%}%>
- 	$(function(){
-		$.post("CartAjaxServlet",{"execute":"cartDetail"},showgoods);//使右上角購物車數量隨時更新
-	});
- 	function showgoods(data){
-		$("#goods").html(data);
-	}
    function tobrand(value){
 	$.post("brand.jsp",{"brand":value},result);
 	}

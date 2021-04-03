@@ -67,7 +67,16 @@ header{
             if(products!=null) number=products.size();                      		
          %> 
            <a href='CartServlet'><img src="images/carticon.png" id='myCarticon'/><span id="goods"><%=number %></span></a>
-	     </div>  
+	     </div>
+<script src='js/jquery.js'></script>	
+<script>
+	$(function(){
+		$.post("CartAjaxServlet",{"execute":"cartDetail"},showgoods);//使右上角購物車數量隨時更新
+	});
+	function showgoods(data){
+		$("#goods").html(data);
+	}
+</script>  
 </header>
 		
 

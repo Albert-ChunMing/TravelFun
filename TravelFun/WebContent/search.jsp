@@ -16,7 +16,7 @@
 		user="root"
 		password="1234" />
 	<sql:query dataSource="${tf}" var="result">
-		SELECT * FROM products join product_colors on products.id=product_colors.product_id where name like '%${param.search}%'
+		SELECT * FROM products join product_colors on products.id=product_colors.product_id where name like '%${param.search}%' or color_name like '%${param.search}%';
 	</sql:query>
 <style>
 .content4p{
@@ -71,13 +71,5 @@
 				</c:forEach>
 		</div>
 	</div>
-<script>
-	$(function(){
-		$.post("CartAjaxServlet",{"execute":"cartDetail"},showgoods);//使右上角購物車數量隨時更新
-	});
-	function showgoods(data){
-		$("#goods").html(data);
-	}
-</script>
 </body>
 </html>

@@ -39,7 +39,6 @@ button:hover { background-color:#3C3C3C; color: white;}
 <script src='js/jquery.js'></script>	
 <script>
 	$(document).ready(function(){
-		$.post("CartServlet",{"execute":"cartDetail"},show);//一進入此頁面就執行此行	
 		$("#add").click(add);
 		$("#buy").click(function(){
 			add();
@@ -55,7 +54,8 @@ button:hover { background-color:#3C3C3C; color: white;}
 	}	
 	function show(data){
 		$("#goods").html(data);
-	}	   	
+	}
+
 </script>	
 </head>
 <body>
