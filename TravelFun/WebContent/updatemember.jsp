@@ -1,6 +1,5 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page import="tf.service.CustomersDAO"%>
-
 <%
 	//每次載入該頁時 從DB取得最新會員資料 同時更新session
 	Customer mem = (Customer)session.getAttribute("member");
@@ -8,6 +7,7 @@
 	session.setAttribute("member", mem);
 	Customer m = (Customer)session.getAttribute("member");
 %>
+<%@include file="/WEB-INF/subviews/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,10 +16,6 @@
 <title>會員資料修改</title>
 <link rel="stylesheet" type="text/css" href="style/travelFun.css">
 
-<script src="https://code.jquery.com/jquery-3.5.1.js"
-			integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-			crossorigin="anonymous"></script>
-<script	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script	src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/localization/messages_zh_TW.min.js"></script>
 <script>
@@ -106,7 +102,7 @@ label.error {display: inline;}
 </style>
 </head>
 <body>
-<%@include file="/WEB-INF/subviews/header.jsp" %>
+
 	<article>
 		<form id="form" class='registerform' method='POST' action='UpdatetServlet3'>
 			<h1>會員資料修改</h1>

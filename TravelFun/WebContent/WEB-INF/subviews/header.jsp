@@ -68,7 +68,7 @@ header{
          %> 
            <a href='CartServlet'><img src="images/carticon.png" id='myCarticon'/><span id="goods"><%=number %></span></a>
 	     </div>
-<script src='js/jquery.js'></script>	
+<script	src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script>
 	$(function(){
 		$.post("CartAjaxServlet",{"execute":"cartDetail"},showgoods);//使右上角購物車數量隨時更新
