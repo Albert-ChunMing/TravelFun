@@ -74,7 +74,7 @@
 		</c:forEach>		
 		<div class="font">
 			<h3>訂單狀態:</h3>
-			&nbsp;1: 已付款已出貨&nbsp;2: 已付款未出貨<br>&nbsp;3: 未付款已出貨&nbsp;4: 未付款未出貨						
+			&nbsp;1: 已付款已出貨&nbsp;2: 已付款未出貨<br>&nbsp;3: 未付款已出貨&nbsp;4: 貨到付款				
 		</div>		
 	<div class="title" id="title2">訂單明細</div>
 	<div id="msg"></div>	

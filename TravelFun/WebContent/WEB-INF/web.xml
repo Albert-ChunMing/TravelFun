@@ -46,6 +46,11 @@
 <filter-mapping>
         <filter-name>CheckAccount</filter-name>
         <url-pattern>/CartView.jsp</url-pattern>
+        <url-pattern>/CartAjaxView.jsp</url-pattern>
+        <url-pattern>/Checkout.jsp</url-pattern>
+        <url-pattern>/QueryOrder.jsp</url-pattern>
+        <url-pattern>/QueryOrderDetail.jsp</url-pattern>
+        <url-pattern>/updatemember.jsp</url-pattern>
 </filter-mapping>
 
 

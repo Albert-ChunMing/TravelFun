@@ -6,31 +6,10 @@
 <%@ page import="model.CartProduct" %>
 <%@ page import="tf.entity.Customer" %>
 <%
-	String s_stName = request.getParameter("stName")==null? "":request.getParameter("stName");
-    String s_stAddr = request.getParameter("stAddr")==null? "":request.getParameter("stAddr");
-    String s_webPara = request.getParameter("webPara")==null?"":request.getParameter("webPara");
-  //中文轉碼 將iso8859_1轉為UTF-8
-    s_stName = new String(s_stName.getBytes("ISO8859_1"),"UTF-8");
-    s_stAddr = new String(s_stAddr.getBytes("ISO8859_1"),"UTF-8");
-    
-    ServletContext context=session.getServletContext();
-    if(s_webPara.equals("")){ 
-    	//將目前session存入ServletContext中的Attribute
-    	context.setAttribute(session.getId(), session);
-    }
-    if(!s_webPara.equals("")){
-    	System.out.println("ezship產生的session: "+session.getId());
-    	System.out.println(session.isNew());
-    	if(session.isNew()){
-    		//舊session的attribute轉移到新的session上
-        	session.setAttribute("productList", ((HttpSession)context.getAttribute(s_webPara)).getAttribute("productList"));
-        	session.setAttribute("totalPrice", ((HttpSession)context.getAttribute(s_webPara)).getAttribute("totalPrice"));
-        	session.setAttribute("member", ((HttpSession)context.getAttribute(s_webPara)).getAttribute("member"));
-        	//更新ServletContext中的Attribute 重選超商時才能在ServletContext中找回原本資料
-        	context.removeAttribute(s_webPara);
-        	context.setAttribute(session.getId(), session);
-    	}    	
-    }
+	request.setCharacterEncoding("UTF-8"); 
+	String s_stName = request.getParameter("s_stName")==null? "":request.getParameter("s_stName");
+    String s_stAddr = request.getParameter("s_stAddr")==null? "":request.getParameter("s_stAddr");   
+
     //從session中取出資料
     List<CartProduct> productList=(List<CartProduct>)session.getAttribute("productList");
     Integer totalPrice=(Integer)session.getAttribute("totalPrice");
@@ -89,9 +68,6 @@
 </head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 <body style="margin: 0">
-<script type="text/javascript">			
-	window.history.forward(1);
-</script>
 <%@include file="/WEB-INF/subviews/header.jsp" %>
 <div class="wrapper">
 <div class="title" id="detail">訂單明細</div>
@@ -130,7 +106,6 @@
             			if(!s_stName.equals("")) address=s_stName+s_stAddr;	
             		%>
             		地址：<textarea rows="3" cols="21" name="address" required><%=address%></textarea>
-            		<input type="hidden" name="webPara" value="<%=s_webPara%>">
         	</div> 				
 				<h3>配送方式：</h3>
 			<div>					
@@ -167,17 +142,11 @@
 <script>
 	function goEZship() {
     	 //指定ezShip回傳資料的位址(本地url 配合自己專案名稱)
-     	 var protocol = "<%=request.getScheme()%>";		
-		<%URL whatismyip = new URL("http://checkip.amazonaws.com");
-			BufferedReader in = new BufferedReader(new InputStreamReader(whatismyip.openStream()));%>
-		 var ipAddress = "<%=in.readLine()%>";
-		 <%in.close();%>
-	     var url = protocol + "://" + ipAddress + ":" + location.port + "<%=request.getContextPath()%>/Checkout.jsp";	
+     	 var protocol = "<%=request.getScheme()%>";
+	     var url = protocol + "://" + "albert1986.ddns.net" + ":" + location.port + "<%=request.getContextPath()%>/EZshipReturn";	
 		$("#rtURL").val(url);
-		//設定要傳到ezShip的資料  之後再由ezShip原封不動帶回
-		<%System.out.println("session ID: "+session.getId());%>		
+		//設定要傳到ezShip的資料  之後再由ezShip原封不動帶回	
 		$("#webPara").val("<%=session.getId()%>");
-		
 		//提交表單			
 	    $("#ezForm").submit();	   
 	}
